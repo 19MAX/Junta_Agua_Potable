@@ -12,6 +12,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $direccion = $_POST["direccion"];
         $estado = ($_POST["estado"] == "1") ? true : false;
         $lectura_anterior = (int)$_POST["lectura_anterior"];
+        $contado_conexion = isset($_POST["contado_conexion_bool"]) && $_POST["contado_conexion_bool"] == "true";
+        $financiamiento_conexion = isset($_POST["financiamiento_conexion_bool"]) && $_POST["financiamiento_conexion_bool"] == "true";
+
 
         // Datos a enviar en la solicitud cURL
         $data = array(
@@ -20,9 +23,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             'n_medidor' => $n_medidor,
             'direccion' => $direccion,
             'estado' => $estado,
-            'lectura_anterior' => $lectura_anterior
+            'lectura_anterior' => $lectura_anterior,
+            'contado_conexion'=> $contado_conexion,
+            'financiamiento_conexion'=> $financiamiento_conexion
         );
-
+ 
         // URL de la API o servidor al que deseas enviar la solicitud cURL
         $url = BASE . '/servicios/new';
 

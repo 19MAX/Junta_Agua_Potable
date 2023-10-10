@@ -1,0 +1,73 @@
+<?php
+include "flash_messages.php";
+include "APIurls.php";
+
+
+// Verificar si se ha proporcionado un ID válido
+if ($_GET) {
+    $nombre = $_GET['nombre'];
+    $id_servicio = $_GET['id_servicio'];
+    $id_de_cliente = $_GET['id_de_cliente'];
+    // Verificar si el archivo de cookies existe y no está vacío
+    if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
+        
+
+        // URL de la API para eliminar un cliente
+        $url = BASE . "/servicios/delete/" . $id_servicio;
+
+        // Inicializar cURL
+        $ch = curl_init($url);
+
+        // Establecer opciones de cURL
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE"); // Usar el método DELETE
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Recibir la respuesta en lugar de imprimirla en pantalla
+        curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile); // Lee las cookies desde el archivo en solicitudes posteriores
+
+        // Ejecutar la solicitud cURL
+        $response = curl_exec($ch);
+
+        // Cerrar la sesión cURL
+        curl_close($ch);
+
+        // Comprobar si hay errores
+        if (curl_errno($ch)) {
+            echo 'Error en la solicitud cURL: ' . curl_error($ch);
+        } else {
+            // Manejar la respuesta de la API aquí
+            // Puedes verificar si la eliminación fue exitosa y mostrar un mensaje de éxito, o manejar cualquier error que devuelva la API.
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            if ($httpCode == 200) {
+                create_flash_message(
+                    "Servicio  Eliminado Exitosamente",
+                    "success"
+                );
+
+                header('Location: /Sistema/servicios.php?id=' . $id_de_cliente . '&nombre=' . $nombre);
+                exit();
+                
+            } elseif ($httpCode === 400) {
+                create_flash_message(
+                    "El servicio no se Elimino Correctamente",
+                    "error"
+                );
+
+                header('Location: /Sistema/servicios.php?id=' . $id_de_cliente . '&nombre=' . $nombre);
+                exit();
+            } else {
+                // Otros códigos de respuesta: Puedes manejarlos según tus necesidades
+                echo 'Error desconocido: Código de respuesta HTTP ' . $httpCode;
+            }
+        }
+
+
+    } else {
+        
+        header('Location: /Sistema/index.php?alert=error');
+        exit();
+    }
+} else {
+    echo "ID de cliente no proporcionado.";
+    // Aquí puedes manejar el caso en que no se proporciona el ID
+}
+
+?>

@@ -22,11 +22,6 @@ curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile); // Lee las cookies desde el a
 // Ejecuta la solicitud CURL y obtén la respuesta
 $response = curl_exec($ch);
 
-// Verifica si hubo algún error
-if (curl_errno($ch)) {
-    echo 'Error en la solicitud CURL: ' . curl_error($ch);
-}
-
 curl_close($ch);
 
 // Decodifica la respuesta JSON en un objeto PHP
@@ -34,13 +29,6 @@ $response = json_decode($response, true);
 
 if ($response && isset($response['success'])) {
     $servicio = $response['success'];
-
-   
-
-
-
-} else {
-    echo '<p>Error: No se pudo obtener la información del cliente.</p>';
 }
 
  // Ahora puedes acceder a los datos de estadisticas
@@ -56,8 +44,6 @@ if ($response && isset($response['success'])) {
      $id_cliente = $datos_servicio['id_cliente'];
      $direccion = $datos_servicio['direccion'];
      $lectura_anterior = $datos_servicio['lectura_anterior'];
-     
- 
  }
 
 
@@ -65,11 +51,10 @@ if ($response && isset($response['success'])) {
      $datos_cliente = $servicio['cliente'];
 
      // Accede a las propiedades del cliente solo si existen
-     $cedula = $datos_cliente['cedula']; 
+     $cedula = $datos_cliente['cedula'];
      $nombres = $datos_cliente['nombres'] ;
      $apellidos = $datos_cliente['apellidos'] ;
      $telefono = $datos_cliente['telefono'] ;
-     
      // Continúa de esta manera para otras propiedades del cliente
  }
  if (isset($servicio['fecha_emision'])) {
@@ -84,14 +69,12 @@ if ($response && isset($response['success'])) {
      $consumo_total = $servicio['consumo_total'];
      $valor_consumo_total = $servicio['valor_consumo_total'];
  }
- 
+
 
 $fecha_array = explode("/", $fechaEmision); 
 
 if (count($fecha_array) === 3) {
-    $mes_numero = $fecha_array[1]; 
-    
-    
+    $mes_numero = $fecha_array[1];
     $nombres_meses = [
         1 => " Enero",
         2 => " Febrero",
@@ -106,14 +89,11 @@ if (count($fecha_array) === 3) {
         11 => " Noviembre",
         12 => " Diciembre"
     ];
-    
     $nombre_mes = $nombres_meses[intval($mes_numero)];
-    
-} 
+}
 
 }else {
-    
-    header('Location: /Sistema/index.php?alert=error');
+    header("Location: $base_request/index.php?alert=error");
     exit();
 }
 ?>
@@ -212,7 +192,7 @@ if (count($fecha_array) === 3) {
     function imprimirPagina() {
         printJS({
             printable:"planilla_imprimir",
-            type:"html",         
+            type:"html",
             css:["css/sb-admin-2.css"],
         })
     }

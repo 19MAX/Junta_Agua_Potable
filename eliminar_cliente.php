@@ -25,44 +25,29 @@ if (isset($_GET['id'])) {
         // Cerrar la sesión cURL
         curl_close($ch);
 
-        // Comprobar si hay errores
-        if (curl_errno($ch)) {
-            echo 'Error en la solicitud cURL: ' . curl_error($ch);
+        // Manejar la respuesta de la API aquí
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+        if ($httpCode == 200) {
+            create_flash_message(
+                "Cliente eliminado exitosamente",
+                "success"
+            );
         } else {
-            // Manejar la respuesta de la API aquí
-            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-            if ($httpCode == 200) {
-
-                create_flash_message(
-                    "Cliente eliminado exitosamente",
-                    "success"
-                );
-
-                header("Location: principal.php");
-                exit;
-            
-            } elseif ($httpCode == 400) {
-                create_flash_message(
-                    "No se pudo eliminar al usuario",
-                    "error"
-                );
-
-                header("Location: principal.php");
-                exit;
-
-            } else {
-                echo "Error al eliminar el cliente. Código HTTP: " . $httpCode;
-            }
+            create_flash_message(
+                "No se pudo eliminar al usuario",
+                "error"
+            );
         }
-
+        header("Location: $base_request/principal.php");
+        exit;
     } else {
-        header('Location: /Sistema/index.php?alert=error');
+        header("Location: $base_request/index.php?alert=error");
         exit();
     }
 } else {
-    echo "ID de cliente no proporcionado.";
-    // Aquí puedes manejar el caso en que no se proporciona el ID
+    header("Location: $base_request/principal.php");
+    exit;
 }
 
 ?>

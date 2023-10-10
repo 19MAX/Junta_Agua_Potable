@@ -1,32 +1,26 @@
 <?php include("APIurls.php");?>
 
-<?php 
+<?php
 if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
-// URL a la que deseas hacer la solicitud GET
-$url = BASE. '/general/get/planillas/pendientes'  ;
+    // URL a la que deseas hacer la solicitud GET
+    $url = BASE. '/general/get/planillas/pendientes'  ;
 
-// Inicializa una nueva sesión CURL
-$ch = curl_init($url);
+    // Inicializa una nueva sesión CURL
+    $ch = curl_init($url);
 
-// Establece las opciones para la sesión CURL
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Devuelve la respuesta como una cadena en lugar de imprimirla
-curl_setopt($ch, CURLOPT_HTTPGET, true); // Utiliza el método GET
-curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile); // Lee las cookies desde el archivo en solicitudes posteriores
+    // Establece las opciones para la sesión CURL
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Devuelve la respuesta como una cadena en lugar de imprimirla
+    curl_setopt($ch, CURLOPT_HTTPGET, true); // Utiliza el método GET
+    curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile); // Lee las cookies desde el archivo en solicitudes posteriores
 
-// Ejecuta la solicitud CURL y obtén la respuesta
-$response = curl_exec($ch);
+    // Ejecuta la solicitud CURL y obtén la respuesta
+    $response = curl_exec($ch);
 
-// Verifica si hubo algún error
-if (curl_errno($ch)) {
-    echo 'Error en la solicitud CURL: ' . curl_error($ch);
-}
+    curl_close($ch);
 
-curl_close($ch);
-
-$response = json_decode($response, true);
+    $response = json_decode($response, true);
 } else {
-    
-    header('Location: /Sistema/index.php?alert=error');
+    header("Location: $base_request/index.php?alert=error");
     exit();
 }
 

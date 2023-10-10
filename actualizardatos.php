@@ -34,8 +34,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         if (curl_errno($ch)) {
             echo 'Error en la solicitud cURL: ' . curl_error($ch);
-        } else {    
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        } else {
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
             if ($httpCode === 200) {
                 create_flash_message(
@@ -45,25 +45,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 header("Location: principal.php");
                 exit;
-            } elseif ($httpCode === 400) {
+            } else {
                 create_flash_message(
                     "El Cliente no se actualizo por favor ingrese nuevamente la informacion",
                     "error"
                 );
 
-                header("Location: principal.php");
+                header("Location: $base_request/principal.php");
                 exit;
-            } else {
-                echo "Error desconocido: Código de respuesta HTTP $httpCode.";
-                
             }
         }
     } else {
-        header('Location: /Sistema/index.php?alert=error');
+        header("Location: $base_request/index.php?alert=error");
         exit();
     }
-} else {
-    echo "Error: El formulario no se ha enviado correctamente.";
 }
 
 ?>

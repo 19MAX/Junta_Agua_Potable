@@ -1,4 +1,4 @@
-<?php 
+<?php
 include("obtenerEstadisticas.php");
 
 include "flash_messages.php";
@@ -9,12 +9,10 @@ $flash_message = display_flash_message();
 if (isset($flash_message)) {
     $message = $flash_message['message'];
     $type = $flash_message['type'];
-
 }
 
 // Verifica si el archivo de cookies existe y no está vacío
 if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
-    
     $url = BASE . "/clientes/get/all";
 
     // Inicializa cURL
@@ -31,38 +29,27 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
     // Cierra la conexión cURL
     curl_close($ch);
 
-    // Verifica si hubo algún error en la solicitud
-    if (curl_errno($ch)) {
-        echo 'Error en la solicitud cURL: ' . curl_error($ch);
-    } else {
-        // Obtén el código de respuesta HTTP
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-        // Procesa la respuesta según el código de respuesta
-        if ($httpCode === 200) {
-            
-        } elseif ($httpCode === 400) {
-            // Respuesta con error
-            $responseData = json_decode($response);
-            echo '<div class="alert alert-danger" role="alert">';
-            if (isset($responseData->error)) {
-                echo 'Error en la solicitud: ' . $responseData->error;
-            } else {
-                echo 'Error desconocido';
-            }
-            echo '</div>';
+    // Obtén el código de respuesta HTTP
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+    // Procesa la respuesta según el código de respuesta
+    if ($httpCode !== 200) {
+        // Respuesta con error
+        $responseData = json_decode($response);
+        if (isset($responseData->error)) {
+            $message = $responseData->error;
         } else {
-            // Otros códigos de respuesta
-            echo 'Código de respuesta HTTP inesperado: ' . $httpCode;
+            $message = "Error al cargar los datos";
         }
+        $type = 'error';
     }
 
 } else {
-    header('Location: /Sistema/index.php?alert=error');
+    header("Location: $base_request/index.php?alert=error");
     exit();
 }
 ?>
-
 
 <?php include("plantilla/header.php"); ?>
 <div class="container-fluid px-4">

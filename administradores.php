@@ -29,17 +29,12 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
     curl_close($ch);
 
     // Verificar el código de respuesta HTTP
-    if ($httpCode === 200) {
-        
-    } elseif ($httpCode === 400) {
-
-        
-    } else {
-        // Otro código de respuesta HTTP
-        echo "Se produjo un error inesperado. Código de respuesta HTTP: " . $httpCode;
+    if ($httpCode !== 200) {
+        $message = 'Error al cargar los datos';
+        $type = 'error';
     }
 } else {
-    header('Location: /Sistema/index.php?alert=error');
+    header("Location: $base_request/index.php?alert=error");
     exit();
 }
 ?>
@@ -49,7 +44,7 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
 
 <div class="container-fluid px-4">
     <h1 class="mt-4">Administradores</h1>
-    
+
 <script src="js/flash_messages.js"></script>
     <div>
         <!-- Content Row -->
@@ -80,8 +75,6 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
                             echo '<tr>';
                             echo'<td>' .$dato['id'] .'</td>';
                             echo'<td>' .$dato['username'] .'</td>';
-
-                           
                             echo '<td>';
                             echo '<button title="Nueva contraseña para un administrador" type="button" class="btn btn-warning m-1 open-modal" data-toggle="modal" data-target="#actualizar_contraseña" data-id="' . $dato['id'] . '"onclick="password(this)">';
                             echo '<i class="fas fa-sync"></i>';

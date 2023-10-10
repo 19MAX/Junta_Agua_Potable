@@ -39,12 +39,9 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
         $notificaciones = $estadisticas['notificaciones'];
 
         // Realiza las operaciones necesarias con los datos
-    } else {
-        echo '<p>Error: No se pudo obtener la información de las estadísticas generales.</p>';
     }
 } else {
-    
-    header('Location: /Sistema/index.php?alert=error');
+    header("Location: $base_request/index.php?alert=error");
     exit();
 }
 

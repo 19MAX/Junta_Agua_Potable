@@ -46,34 +46,22 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
     // Obtener el código de respuesta HTTP
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-    // Comprobar si hubo errores en la solicitud cURL
-    if (curl_errno($ch)) {
-        echo "Error en la solicitud cURL: " . curl_error($ch);
+    // Procesa la respuesta según el código de respuesta HTTP
+    if ($httpCode === 200) {
+        create_flash_message(
+            "Se Cambio el estado de pago Correctamente ",
+            "success"
+        );
     } else {
-        // Procesa la respuesta según el código de respuesta HTTP
-        if ($httpCode === 200) {
-            create_flash_message(
-                "Se Cambio el estado de pago Correctamente ",
-                "success"
-            );
-
-            header('Location: /Sistema/planillas.php?id=' . $id_servicio);
-            exit();
-        } elseif ($httpCode === 400) {
-            create_flash_message(
-                "El estado de pago no se pudo Cambiar ",
-                "error"
-            );
-
-            header('Location: /Sistema/planillas.php?id=' . $id_servicio);
-            exit();
-        } else {
-            // Otros códigos de respuesta: Puedes manejarlos según tus necesidades
-            echo 'Error desconocido: Código de respuesta HTTP ' . $httpCode;
-        }
+        create_flash_message(
+            "El estado de pago no se pudo Cambiar ",
+            "error"
+        );
     }
+    header("Location: $base_request/planillas.php?id=" . $id_servicio);
+    exit();
 } else {
-    header('Location: /Sistema/index.php?alert=error');
+    header("Location: $base_request/index.php?alert=error");
     exit();
 }
 ?>

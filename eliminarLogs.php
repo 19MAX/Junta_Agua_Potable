@@ -1,6 +1,7 @@
 <?php
 include "flash_messages.php";
 include "APIurls.php";
+
 if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
     // URL de la API o recurso al que deseas enviar la solicitud DELETE
     $url = BASE . '/logs/delete/old';
@@ -19,33 +20,27 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
 
     // Cierra la sesión cURL
     curl_close($ch);
-    
+
     // Verifica si la solicitud fue exitosa
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
     if ($httpCode === 200) {
 
         create_flash_message(
-            "Logs  Eliminados Exitosamente ",
+            "Logs Eliminados Exitosamente ",
             "success"
         );
-        header('Location: /Sistema/logs.php');
-        exit();
-
-    } elseif ($httpCode === 400) {
+    } else {
         create_flash_message(
-            "Logs  No Eliminados ",
+            "Logs No Eliminados ",
             "error"
         );
-        header('Location: /Sistema/logs.php');
-        exit();
-    } else {
-        // Otros códigos de respuesta: Puedes manejarlos según tus necesidades
-        echo 'Error desconocido: Código de respuesta HTTP ' . $httpCode;
     }
+    header("Location: $base_request/logs.php");
+    exit();
 
 } else {
-    header('Location: /Sistema/index.php?alert=error');
+    header("Location: $base_request/index.php?alert=error");
     exit();
 }
 ?>

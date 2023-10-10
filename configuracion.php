@@ -38,10 +38,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Earnings (Monthly) Card Example -->
-       
-
         <!-- Pending Requests Card Example -->
         <div class="col-xl-3 col-md-6 mb-3" >
             <div class="card border-left-success shadow h-100 py-2">
@@ -102,7 +98,7 @@
                         <div >
                             <label >Consumo Base </label>
                             <input class="form-control" step="any" name="consumo_base" type="number" value="<?php echo $consumo_base;?>"/>
-                        </div>                                  
+                        </div>
                     </div>
 
                     <div class="form-floating mb-3">
@@ -138,14 +134,18 @@
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                         <button type="submit" class="btn btn-primary">Actualizar Datos</button>
                     </div>
-
-
                 </form>
-
             </div>
         </div>
     </div>
 </div>
 
+<!-- script de alertas -->
+<script src="js/flash_messages.js"></script>
+<script>
+    $(document).ready(function () {
+        showFlashMessages('<?php echo $message; ?>', '<?php echo $type; ?>');
+    });
+</script>
 
 <?php include("plantilla/footer.php");?>

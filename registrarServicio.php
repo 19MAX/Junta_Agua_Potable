@@ -2,6 +2,9 @@
 include "flash_messages.php";
 include "APIurls.php";
 
+ini_set('display_errors',1);
+error_reporting(E_ALL);
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Verificar si el archivo de cookies existe y no está vacío
     if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
@@ -12,6 +15,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $direccion = $_POST["direccion"];
         $estado = ($_POST["estado"] == "1") ? true : false;
         $lectura_anterior = (int)$_POST["lectura_anterior"];
+        $contado_conexion = isset($_POST["contado_conexion_bool"]) && $_POST["contado_conexion_bool"] == "true";
+        $financiamiento_conexion = isset($_POST["financiamiento_conexion_bool"]) && $_POST["financiamiento_conexion_bool"] == "true";
+
 
         // Datos a enviar en la solicitud cURL
         $data = array(
@@ -20,7 +26,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             'n_medidor' => $n_medidor,
             'direccion' => $direccion,
             'estado' => $estado,
-            'lectura_anterior' => $lectura_anterior
+            'lectura_anterior' => $lectura_anterior,
+            'contado_conexion'=> $contado_conexion,
+            'financiamiento_conexion'=> $financiamiento_conexion
         );
 
         // URL de la API o servidor al que deseas enviar la solicitud cURL
@@ -60,9 +68,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 "Servicio No Registrado ",
                 "error"
             );
+        }
         header("Location: $base_request/servicios.php?id=" . $id_cliente . '&nombre=' . $nombre);
         exit();
-        }
     } else {
         // El archivo de cookies no existe o está vacío
         header("Location: $base_request/index.php?alert=error");

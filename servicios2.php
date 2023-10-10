@@ -31,7 +31,7 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
 <?php include("plantilla/header.php") ?>
 
 <div class="container-fluid px-4">
-    <h1 class="mt-4">Todos los Servicios</h1>
+    <h1 class="mt-4">Servicios y Generar Planillas</h1>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item"><a href="principal.php">Regresar</a></li>
     </ol>
@@ -43,14 +43,13 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
             <div class="col-xl-12 col-lg-12">
                 <div class="card shadow mb-4">
                     <!-- Card Header - Dropdown -->
-                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between shadow-sm">
                         <h6 class="m-0 font-weight-bold text-primary">Servicios</h6>
                         <div class="dropdown no-arrow">
-                           
                         </div>
                     </div>
                     <!-- Card Body -->
-                    <div class="table-responsive ">
+                    <div class="table-responsive shadow-sm">
                         <table id="tabla_generarP" class="crud-table">
                             <thead>
                                 <tr>
@@ -63,6 +62,7 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
                                     <th class="exclude">Estado</th>
                                     <th >Lectura Anterior</th>
                                     <th>Planilla Actual Emitida</th>
+                                    <th>Financiamiento Conexion</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -86,6 +86,7 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
                             $nombres = $cliente['nombres'];
                             $apellidos = $cliente['apellidos'];
                             $telefono = $cliente['telefono'];
+                            $financiamiento_conexion = $registro['financiamiento_conexion'];
                         
                             echo '<tr>';
                             echo '<td>' . $id_de_cliente . '</td>';
@@ -109,10 +110,10 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
                                 echo '    <td>' . $lectura_anterior . '</td>';
                             } else {
                                 echo '    <td>';
-                                echo '        <form class=" d-flex" method="POST" action="registrar_planilla.php">';
+                                echo '        <form  method="POST" action="registrar_planilla.php">';
                                 echo '            <input type="hidden" name="id_servicio" value="' . $id . '">';
                                 echo '            <input class="form-control-sm w-50" type="number" name="lectura_actual" value="' . $lectura_anterior . '">';
-                                echo '            <button class=" exclude-element btn btn-success ml-2 pb-0 h-25" type="submit">Guardar</button>';
+                                echo '            <button class=" exclude-element btn btn-success pb-0  h-25" type="submit">Guardar</button>';
                                 echo '        </form>';
                                 echo '    </td>';
                             }
@@ -120,6 +121,8 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
                             
 
                             echo '<td>' . ($planilla_actual_emitida ? "Sí" : "No") . '</td>';
+                            
+                            echo '<td>' . ($financiamiento_conexion ? "Sí" : "No") . '</td>';
                             echo '</tr>';
                         }
                         

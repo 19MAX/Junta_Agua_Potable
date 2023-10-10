@@ -17,8 +17,8 @@ if (isset($_GET['id']) && isset($_GET['id_cliente'])) {
 
         // Datos a enviar en formato JSON
         $data = [
-            'id' => $id_servicio, 
-            'estado' => $estado, 
+            'id' => $id_servicio,
+            'estado' => $estado,
         ];
 
         // Convertir datos a JSON
@@ -41,47 +41,30 @@ if (isset($_GET['id']) && isset($_GET['id_cliente'])) {
         // Realizar la solicitud a la API
         $response = curl_exec($ch);
 
-        // Comprobar si hay errores
-        if (curl_errno($ch)) {
-            echo 'Error al realizar la solicitud cURL: ' . curl_error($ch);
-        } else {
-            // Procesar la respuesta de la API
-            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-            if ($httpCode == 200) {
-                create_flash_message(
-                    "El Estado se Actualizo Correctamente ",
-                    "success"
-                );
-
-                header('Location: /Sistema/servicios.php?id=' . $id_cliente . '&nombre=' . $nombre);
-                exit();
-
-            } elseif ($httpCode === 400) {
-                
-                create_flash_message(
-                    "El Estado No se Actualizo ",
-                    "error"
-                );
-
-                header('Location: /Sistema/servicios.php?id=' . $id_cliente . '&nombre=' . $nombre);
-
-            } else {
-                // Otros códigos de respuesta: Puedes manejarlos según tus necesidades
-                echo 'Error desconocido: Código de respuesta HTTP ' . $httpCode;
-            }
-        }
-
+        // Procesar la respuesta de la API
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         // Cerrar la conexión cURL
         curl_close($ch);
+
+        if ($httpCode === 200) {
+            create_flash_message(
+                "El Estado se Actualizo Correctamente ",
+                "success"
+            );
+        } else {
+            create_flash_message(
+                "El Estado No se Actualizo ",
+                "error"
+            );
+        }
+        header("Location: $base_request/servicios.php?id=" . $id_cliente . '&nombre=' . $nombre);
+        exit();
     } else {
         // Las cookies no están definidas o están vacías
-        
-    header('Location: /Sistema/index.php?alert=error');
-    exit();
+        header("Location: $base_request/index.php?alert=error");
+        exit();
     }
 }
-
-
-
+header("Location: $base_request/servicios.php?id=" . $id_cliente . '&nombre=' . $nombre);
+exit();
 ?>

@@ -11,8 +11,6 @@ if ($_POST) {
         $apellidos = $_POST["apellidos"];
         $telefono = $_POST["telefono"];
 
-        
-
         // Datos a enviar en el cuerpo de la solicitud en formato JSON
         $data = array(
             'cedula' => $cedula,
@@ -43,49 +41,31 @@ if ($_POST) {
         // Ejecutar la solicitud cURL
         $response = curl_exec($ch);
 
-        
         // Cerrar la sesión cURL
         curl_close($ch);
 
         // Obtener el código de respuesta HTTP
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-        // Comprobar si hay errores
-        if (curl_errno($ch)) {
-            echo 'Error en la solicitud cURL: ' . curl_error($ch);
-        } else {
-            // Manejar la respuesta de la API según el código de respuesta
-            if ($httpCode === 201) {
-                // Respuesta exitosa
+        // Manejar la respuesta de la API según el código de respuesta
+        if ($httpCode !== 201) {
+            $response = json_decode($response);
 
-                create_flash_message(
-                    "Cliente Registrado exitosamente",
-                    "success"
-                );
-
-                header("Location: principal.php");
-                exit();
-            } elseif ($httpCode === 400) {
-                $response = json_decode($response);
-
-                create_flash_message(
-                    "No se pudo registrar el usuario",
-                    "error"
-                );
-
-                header("Location: principal.php");
-                exit();
-            } else {
-                // Otros códigos de respuesta
-                header('Location: /Sistema/index.php?alert=error_inesperado');
-                exit();
-            }
-            
+            create_flash_message(
+                "No se pudo registrar el usuario",
+                "error"
+            );
+        } else{
+            create_flash_message(
+                "Cliente Registrado exitosamente",
+                "success"
+            );
         }
-
+        header("Location: $base_request/principal.php");
+        exit();
     } else {
         // El archivo de cookies no existe o está vacío
-        header('Location: /Sistema/index.php?alert=error');
+        header("Location: $base_request/index.php?alert=error");
         exit();
     }
 }

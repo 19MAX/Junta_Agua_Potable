@@ -82,14 +82,15 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
         <div class="col-xl-12 col-lg-12">
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 align-items-center justify-content-between">
+                <div class="card-header py-3 align-items-center justify-content-between shadow-sm">
                     <h3 class="mt-4">Servicios del cliente:</h3>
-                    <h6 class="m-0 font-weight-bold text-primary">
+                    <h6 class="m-0 font-weight-bold text-primary ">
                         <p class=" text-dark" ><?php echo $nombre; ?></p>
                     </h6>
                 </div>
                 <!-- Card Body -->
-                <div class="table-responsive">
+                <div class="table-responsive shadow-sm">
+                    
                     <table id="tabla_servicios" class="crud-table" >
                         <thead>
                             <tr>
@@ -99,18 +100,16 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
                                 <th>ID_Cliente</th>
                                 <th>Direccion</th>
                                 <th>Lectura Anterior Medidor</th>
+                                <th>Conexion con Financiamiento</th>
                                 <th class="exclude">Estado de Servicio</th>
                                 <th class="exclude">Editar Servicio</th>
                                 <th class="exclude">Eliminar Servicio</th>
                                 <th class="exclude">Cambiar al cliente que le pertenece el servico</th>
                                 <th class="exclude">Planillas</th>
-                                
-                                            
                             </tr>
                         </thead>
                         <tbody>
                             <?php
-                        
                         foreach ($response['success'] as $dato) {
                             echo '<tr>';
                             echo'<td>' .$dato['id'] .'</td>';
@@ -119,10 +118,8 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
                             echo'<td>' .$dato['id_cliente'] .'</td>';
                             echo'<td>' .$dato['direccion'] .'</td>';
 
-                            
-                            
-
                             echo'<td>' .$dato['lectura_anterior'] .'</td>';
+                            echo '<td>' . ($dato['financiamiento_conexion'] ? "Sí" : "No") . '</td>';
 
                             echo '<td>';
                             echo '<a href="procesar_estado.php?id_cliente=' . $dato['id_cliente'] . '&id=' . $dato['id'] . '&estado=' . ($dato['estado'] ? '0' : '1') . '&nombre=' . $nombre . '" class="btn btn-' . ($dato['estado'] ? 'success' : 'danger') . ' m-1" title="' . ($dato['estado'] ? 'Activado' : 'Desactivado') . '">';
@@ -170,13 +167,11 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
                             echo '</td>';
 
                             echo '</tr>';
-                            
                         }
                         ?>
 
                         </tbody>
                     </table>
-                           
                 </div>
             </div>
         </div>
@@ -195,63 +190,55 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
                 </button>
             </div>
             <div class="modal-body">
-
                 <form method="POST" action="registrarServicio.php">
-
-                <input type="hidden" name="id_cliente" value="<?php echo $id_de_cliente; ?>">
-
-                
-                <input type="hidden" name="nombre" value="<?php echo $nombre; ?>">
-
-                     
+                    <input type="hidden" name="id_cliente" value="<?php echo $id_de_cliente; ?>">
+                    <input type="hidden" name="nombre" value="<?php echo $nombre; ?>">
                     <div class="form-floating mb-3">
-                        <div >
-                            <label >N_conexion</label>
+                        <div>
+                            <label>N_conexion</label>
                             <input class="form-control" name="n_conexion" type="number" />
-                        </div>                                  
-                    </div>
-
-                    <div class="form-floating mb-3">
-                        <div>
-                        <label >N_medidor</label>
-                        <input class="form-control"  type="number" name="n_medidor" />
                         </div>
                     </div>
-                    
                     <div class="form-floating mb-3">
                         <div>
-                        <label >Direccion</label>
-                        <input class="form-control"  type="text" name="direccion" />
+                            <label>N_medidor</label>
+                            <input class="form-control" type="number" name="n_medidor" />
                         </div>
                     </div>
-
                     <div class="form-floating mb-3">
                         <div>
-                        <label >Estado</label>
-
-                        <select class="form-select" id="estado" name="estado">
-                        <option value="1">Activado</option>
-                        <option value="0">Desactivado</option>
-                        </select>
-
+                            <label>Direccion</label>
+                            <input class="form-control" type="text" name="direccion" />
                         </div>
                     </div>
-
                     <div class="form-floating mb-3">
                         <div>
-                        <label >Lectura_anterior</label>
-                        <input class="form-control"  type="number" name="lectura_anterior" />
+                            <label>Estado</label>
+                            <select class="form-select" id="estado" name="estado">
+                                <option value="1">Activado</option>
+                                <option value="0">Desactivado</option>
+                            </select>
                         </div>
                     </div>
-                
-                        
+                    <div class="form-floating mb-3">
+                        <div>
+                            <label>Lectura_anterior</label>
+                            <input class="form-control" type="number" name="lectura_anterior" />
+                        </div>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="contado_conexion" name="contado_conexion_bool" value="true" onclick="disableFinanciamiento()">
+                        <label class="form-check-label" for="contado_conexion">Conexion al contado ($250)</label>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="financiamiento_conexion" name="financiamiento_conexion_bool" value="true" onclick="disableContado()">
+                        <label class="form-check-label" for="financiamiento_conexion">Conexion con Financiamiento ($150)</label>
+                    </div>
                     <div class="modal-footer">
-                        <button type="button" onclick="modal_hide()"  class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="button" onclick="modal_hide()" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                         <button type="submit" class="btn btn-primary">Registrar Servicio</button>
                     </div>
-
                 </form>
-                
             </div>
         </div>
     </div>
@@ -271,10 +258,8 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
             <div class="modal-body">
                 <form method="POST" action="editar_servicios.php" id="FormularioB">
 
-                
 
                 <input type="hidden" name="nombre" value="<?php echo $nombre; ?>">
-                    
                 <input type="hidden" name="id_de_cliente" value="<?php echo $id_de_cliente; ?>">
 
                 <input type="hidden" name="id_servicio" value="">
@@ -386,6 +371,20 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
 </div>
 
 <script>
+    function disableFinanciamiento() {
+        document.getElementById("financiamiento_conexion").disabled = document.getElementById("contado_conexion").checked;
+    }
+
+    function disableContado() {
+        document.getElementById("contado_conexion").disabled = document.getElementById("financiamiento_conexion").checked;
+    }
+
+    function modal_hide() {
+        // Agrega aquí la lógica para ocultar el modal si es necesario.
+    }
+
+
+
     $(document).ready(function () {
 
     showFlashMessages('<?php echo $message; ?>', '<?php echo $type; ?>');

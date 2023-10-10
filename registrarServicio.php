@@ -42,44 +42,30 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         // Ejecutar la solicitud cURL
         $response = curl_exec($ch);
-        
+
         // Cerrar la sesión cURL
         curl_close($ch);
-        
 
-        // Comprobar si hay errores en la solicitud cURL
-        if (curl_errno($ch)) {
-            echo 'Error en la solicitud cURL: ' . curl_error($ch);
-        } else {
-            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-            // Procesar la respuesta según el código de respuesta HTTP
-            if ($httpCode === 201) {
+        // Procesar la respuesta según el código de respuesta HTTP
+        if ($httpCode === 201) {
 
-                create_flash_message(
-                    "Servicio Registrado Exitosamente",
-                    "success"
-                );
-
-                header('Location: /Sistema/servicios.php?id=' . $id_cliente . '&nombre=' . $nombre);
-                exit();
-            } elseif ($httpCode === 400) {
-                
-                create_flash_message(
-                    "Servicio No Registrado ",
-                    "error"
-                );
-                header('Location: /Sistema/servicios.php?id=' . $id_cliente . '&nombre=' . $nombre);
-
-            } else {
-                // Otros códigos de respuesta: Puedes manejarlos según tus necesidades
-                echo 'Error desconocido: Código de respuesta HTTP ' . $httpCode;
-            }
+            create_flash_message(
+                "Servicio Registrado Exitosamente",
+                "success"
+            );
+        } else{
+            create_flash_message(
+                "Servicio No Registrado ",
+                "error"
+            );
+        header("Location: $base_request/servicios.php?id=" . $id_cliente . '&nombre=' . $nombre);
+        exit();
         }
-
     } else {
         // El archivo de cookies no existe o está vacío
-        header('Location: /Sistema/index.php?alert=error');
+        header("Location: $base_request/index.php?alert=error");
         exit();
     }
 }

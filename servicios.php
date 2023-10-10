@@ -17,7 +17,6 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
     if ($_GET) {
         $id_de_cliente = $_GET['id'];
         $nombre =$_GET['nombre'];
-        // $info_clientes = json_decode($_GET['info_clientes'], true);
     }
 
     // URL de la API que deseas consultar
@@ -65,12 +64,8 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
 
     // Cierra la conexión cURL
     curl_close($ch);
-    // Puedes procesar la respuesta aquí
 } else {
-    // El archivo de cookies no existe o está vacío, realiza la acción que desees en este caso
-    // Por ejemplo, puedes redirigir a la página de inicio de sesión o mostrar un mensaje de error.
-    
-    header('Location: /Sistema/index.php?alert=error');
+    header("Location: $base_request/index.php?alert=error");
     exit();
 }
 ?>
@@ -87,16 +82,14 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
         <div class="col-xl-12 col-lg-12">
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <div class="card-header py-3 align-items-center justify-content-between">
+                    <h3 class="mt-4">Servicios del cliente:</h3>
                     <h6 class="m-0 font-weight-bold text-primary">
-                    Servicios del Cliente : <p class=" text-dark" ><?php echo $nombre; ?></p> 
-                    
+                        <p class=" text-dark" ><?php echo $nombre; ?></p>
                     </h6>
-                    
                 </div>
                 <!-- Card Body -->
                 <div class="table-responsive">
-                    
                     <table id="tabla_servicios" class="crud-table" >
                         <thead>
                             <tr>

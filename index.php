@@ -84,7 +84,9 @@ if ($_POST) {
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>Sistema 1</title>
-        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+        
+        <link rel="icon" href="plantilla/imagen2.png">
+        
         <link href="css2/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="css2/stilos.css">
@@ -97,48 +99,52 @@ if ($_POST) {
         <!-- Custom styles for this template-->
         <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
-
-
-        <link rel="stylesheet" href="https://cdn.datatables.net/plug-ins/1.11.10/i18n/Spanish.json">
-
-        <!-- CDN DE PRINTJS.CRABBLY.COM -->
-        <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
-        <link rel="stylesheet" href="https://printjs-4de6.kxcdn.com/print.min.css">
-        <script></script>
-
     </head>
-    <body class="bg-primary">
+    <body>
         <div id="layoutAuthentication">
-            <div id="layoutAuthentication_content">
+            <div id="layoutAuthentication_content" class=" bg-gradient-dark">
                 <main>
                     <div class="container">
                         <div class="row justify-content-center">
                             <div class="col-lg-5">
-                                <div class="card shadow-lg border-0 rounded-lg mt-5">
-                                    <div class="card-header " class="carta" id="carta">
-                                        <h3 class="text-center font-weight-light my-4">LOGIN</h3>
+                                <div class="card shadow-lg border-5 rounded-4 mt-5">
+                                    <div class="card-header border-5 rounded-4 shadow" class="carta" id="carta">
+                                        <h3 class="text-center font-weight-light my-4">
+                                        <img src="plantilla/imagen2.png">
+                                        </h3>
                                     </div>
                                     <div class="card-body ">
                                         <form method="post" action="">
                                             <div class="form-floating mb-3">
 
-                                                <div >
-                                                <label for="inputEmail">Usuario</label>
-                                                <input class="form-control" name="usuario" id="inputEmail" type="text" placeholder="name@example.com" />
+                                                <div>
+                                                    <label for="inputEmail">Usuario</label>
+                                                    <div class="input-group">
+                                                        <input class="form-control rounded-5 pt-4 pb-4" name="usuario" id="inputEmail" type="text" placeholder="Usuario" />
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text bg-white border-0">
+                                                            <i class="fa-regular fa-user"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                     
                                             </div>
-                                            <div class="form-floating mb-3">
 
-                                                <div>
-                                                <label for="inputPassword">Clave</label>
-                                                <input class="form-control" id="inputPassword" type="password" name="clave" placeholder="Password" />
+                                            <label for="inputPassword">Contraseña</label>
+                                            <div class="form-floating mb-3">
+                                                <div class="input-group">
+                                                    <input class="form-control rounded-5 pt-4 pb-4" id="inputPassword" type="password" name="clave" placeholder="Contraseña" />
+                                                    <div class="input-group-append">
+                                                        <span id="togglePassword" class="input-group-text bg-white border-0">
+                                                        <i class="fa-solid fa-eye"></i>
+                                                        </span>
+                                                    </div>
                                                 </div>
-                                                
-                                                
                                             </div>
-                                            <div class="d-flex justify-content-center align-items-center" >
-                                            <button type="submit" class="btn btn-primary btn-user btn-block" id="inicio">
+
+                                            <div class=" mx-auto">
+                                            <button type="submit" class="btn btn-dark btn-block rounded-5 bg-info mt-4 border-0" id="inicio">
                                             Iniciar Sesion
                                             </button>
                                             </div>
@@ -150,20 +156,23 @@ if ($_POST) {
                     </div>
                 </main>
             </div>
-            <div id="layoutAuthentication_footer">
-                <footer class="py-4 bg-light mt-auto">
-                    <div class="container-fluid px-4">
-                        <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Your Website 2023</div>
-                            <div>
-                                <a href="#">Privacy Policy</a>
-                                &middot;
-                                <a href="#">Terms &amp; Conditions</a>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
-            </div>
         </div>
+
+<script>
+    document.getElementById("togglePassword").addEventListener("click", function () {
+        const passwordField = document.getElementById("inputPassword");
+        const toggleIcon = document.getElementById("toggleIcon");
+
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            toggleIcon.classList.remove("bi-eye");
+            toggleIcon.classList.add("bi-eye-slash");
+        } else {
+            passwordField.type = "password";
+            toggleIcon.classList.remove("bi-eye-slash");
+            toggleIcon.classList.add("bi-eye");
+        }
+    });
+</script>
 
 <?php include("plantilla/footer.php");?>

@@ -96,9 +96,6 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
                                     </div>
                                 </div>
 
-                                <!-- Earnings (Monthly) Card Example -->
-                            
-
                                 <!-- Pending Requests Card Example -->
                                 <div class="col-xl-4 col-md-12 mb-4" >
                                     <div class="card border-left-warning shadow h-100 py-2">
@@ -125,7 +122,7 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
                     <h6 class="m-0 font-weight-bold text-primary">Clientes </h6>
 
                 </div>
-                
+
                 <div class="table-responsive crud-table">
                     <table id="tabla_clientes">
                         <thead>
@@ -138,7 +135,6 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
                                 <th class="exclude">Informacion</th>
                                 <th class="exclude">Actualizar</th>
                                 <th class="exclude">Servicios</th>
-                                
                             </tr>
                         </thead>
                         <tbody>
@@ -188,18 +184,12 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
                             echo '</tr>';
 
                         }
- 
                         ?>
-
-                        
                         </tbody>
                     </table>
-                
                 </div>
             </div>
         </div>
-        
-       
     </div>
 </div>
 
@@ -222,7 +212,7 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
                         <div >
                             <label >Cédula</label>
                             <input class="form-control" name="cedula" type="text"/>
-                        </div>                                  
+                        </div>
                     </div>
 
                     <div class="form-floating mb-3">
@@ -231,7 +221,6 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
                         <input class="form-control"  type="text" name="nombres" />
                         </div>
                     </div>
-                    
                     <div class="form-floating mb-3">
                         <div>
                         <label >Apellidos</label>
@@ -245,15 +234,12 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
                         <input class="form-control"  type="text" name="telefono" />
                         </div>
                     </div>
-                
-                        
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" onclick="modal_hide()" data-dismiss="modal">Cerrar</button>
                         <button type="submit" class="btn btn-primary">Guardar cambios</button>
                     </div>
 
                 </form>
-                
             </div>
         </div>
     </div>
@@ -276,7 +262,7 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
                         <div >
                             <label >Cédula</label>
                             <input class="form-control"  name="cedula"  type="text"/>
-                        </div>                                  
+                        </div>
                     </div>
 
                     <div class="form-floating mb-3">

@@ -55,6 +55,8 @@ if ($_POST) {
     curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile);
 
     $response = curl_exec($ch);
+    // Cerrar la sesión cURL
+    curl_close($ch);
 
     // Obtener el código de respuesta HTTP
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -64,10 +66,8 @@ if ($_POST) {
         file_put_contents($cookieFile, $cookieInfo[0], FILE_APPEND);
 
         header("Location: $base_request/principal.php");
+        exit();
     }
-
-    // Cerrar la sesión cURL
-    curl_close($ch);
 }
 
 ?>

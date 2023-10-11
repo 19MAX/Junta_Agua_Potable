@@ -4,6 +4,7 @@
 
 <?php include("plantilla/header.php");?>
 <div class="container-fluid">
+<script src="js/flash_messages.js"></script>
 <button type="button" class="btn btn-info m-3" data-toggle="modal" data-target="#modalConf">
     Actualizar datos
 </button>
@@ -144,6 +145,12 @@
 <script src="js/flash_messages.js"></script>
 <script>
     $(document).ready(function () {
+        showFlashMessages('<?php echo $message; ?>', '<?php echo $type; ?>');
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
         showFlashMessages('<?php echo $message; ?>', '<?php echo $type; ?>');
     });
 </script>

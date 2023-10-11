@@ -30,8 +30,8 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
 <?php include("plantilla/header.php"); ?>
 <div class="container-fluid px-4">
     <h1 class="mt-4">Planillas Pendientes</h1>
-    <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a href="principal.php">Regresar</a></li>
+    <ol class="breadcrumb mb-4 shadow-sm">
+        <li class="breadcrumb-item "><a href="principal.php">Regresar</a></li>
     </ol>
 
     <div>
@@ -41,7 +41,7 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
             <div class="col-xl-12 col-lg-12">
                 <div class="card shadow mb-4">
                     <!-- Card Header - Dropdown -->
-                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between shadow-sm">
                         <h6 class="m-0 font-weight-bold text-primary">Planillas Pendientes</h6>
                         <div class="dropdown no-arrow">
                            
@@ -49,7 +49,7 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
                         </div>
                     </div>
                     <!-- Card Body -->
-                    <div class="table-responsive ">
+                    <div class="table-responsive shadow-sm">
                         <table id="tabla_pendientes" class="crud-table">
                             <thead>
                                 <tr>

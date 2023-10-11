@@ -7,7 +7,7 @@ const BASE = 'http://104.248.230.251:8786/api';
 $cookieFile = realpath('cookieFile.txt');
 
 # Ruta Base del proyecto web
-$base_request = dirname($_SERVER['REQUEST_URI']);
+$base_request = dirname($_SERVER['HTTP_HOST']);
 
 ?>
 

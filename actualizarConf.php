@@ -1,6 +1,7 @@
 <?php
 include "flash_messages.php";
 include "APIurls.php";
+
 if ($_POST) {
     $consumo_base = (float)$_POST['consumo_base'];
     $exedente = (float)$_POST['exedente'];
@@ -50,28 +51,21 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
     // Cerrar la sesión cURL
     curl_close($ch);
 
-    if ($httpCode == 200) {
-
+    if ($httpCode === 200) {
         create_flash_message(
-            "Datos Actualizados  Exitosamente ",
+            "Datos Actualizados Exitosamente",
             "success"
         );
-        header('Location: /Sistema/configuracion.php');
-        exit();
-    } elseif ($httpCode == 400) {
+    } else {
         create_flash_message(
-            "Datos No  Actualizados  ",
+            "Datos No Actualizados",
             "error"
         );
-        header('Location: /Sistema/configuracion.php');
-        exit();
-    } else {
-        // Otro código de respuesta HTTP
-        echo 'Error en la solicitud: Código de respuesta HTTP ' . $httpCode;
     }
-
+    header("Location: $base_request/configuracion.php");
+    exit();
 } else {
-    header('Location: /Sistema/index.php?alert=error');
+    header("Location: $base_request/index.php?alert=error");
     exit();
 }
 ?>

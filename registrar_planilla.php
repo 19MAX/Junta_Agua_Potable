@@ -34,43 +34,33 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         // Ejecutar la solicitud cURL
         $response = curl_exec($ch);
-        
+
         // Cerrar la sesión cURL
         curl_close($ch);
 
         // Obtener el código de respuesta HTTP
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-        // Comprobar si hubo errores en la solicitud cURL
-        if (curl_errno($ch)) {
-            echo 'Error en la solicitud cURL: ' . curl_error($ch);
+        // Procesar la respuesta según el código de respuesta HTTP
+        if ($httpCode === 201) {
+            create_flash_message(
+                "La planilla se Registro Exitosamente ",
+                "success"
+            );
         } else {
-            // Procesar la respuesta según el código de respuesta HTTP
-            if ($httpCode === 201) {
-                create_flash_message(
-                    "La planilla se Registro Exitosamente ",
-                    "success"
-                );
-
-                header('Location: /Sistema/planillas.php?id=' . $id_servicio);
-                exit();
-            } elseif ($httpCode === 400) {
-                create_flash_message(
-                    "La planilla no se Registro ",
-                    "error"
-                );
-
-                header('Location: /Sistema/planillas.php?id=' . $id_servicio);
-                exit();
-            } else {
-                // Otros códigos de respuesta: Puedes manejarlos según tus necesidades
-                echo 'Error desconocido: Código de respuesta HTTP ' . $httpCode;
-            }
+            create_flash_message(
+                "La planilla no se Registro ",
+                "error"
+            );
         }
+        header("Location: $base_request/planillas.php?id=" . $id_servicio);
+        exit();
     } else {
         // El archivo de cookies no existe o está vacío
-        header('Location: /Sistema/index.php?alert=error');
+        header("Location: $base_request/index.php?alert=error");
         exit();
     }
 }
+header("Location: $base_request/planillas.php?id=" . $id_servicio);
+exit();
 ?>

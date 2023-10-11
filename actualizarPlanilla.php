@@ -27,44 +27,34 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             'Content-Length: ' . strlen($json_data))
         );
         curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile);
-        
+
         $response = curl_exec($ch);
-        
+
         curl_close($ch);
 
         // Obtener el código de respuesta HTTP
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-        // Comprobar si hubo errores en la solicitud cURL
-        if (curl_errno($ch)) {
-            echo 'Error en la solicitud cURL: ' . curl_error($ch);
+        // Procesa la respuesta según el código de respuesta HTTP
+        if ($httpCode === 200) {
+            create_flash_message(
+                "La Planilla se Actualizo exitosamnete",
+                "success"
+            );
         } else {
-            // Procesa la respuesta según el código de respuesta HTTP
-            if ($httpCode === 200) {
-                create_flash_message(
-                    "La Planilla se Actualizo exitosamnete",
-                    "success"
-                );
-                header('Location: /Sistema/planillas.php?id=' . $id_servicio);
-                exit();
-            } elseif ($httpCode === 400) {
-                create_flash_message(
-                    "La Planilla no se puede Actualizar",
-                    "error"
-                );
-    
-                header('Location: /Sistema/planillas.php?id=' . $id_servicio);
-                exit();
-            } else {
-                // Otros códigos de respuesta: Puedes manejarlos según tus necesidades
-                echo 'Error desconocido: Código de respuesta HTTP ' . $httpCode;
-            }
+            create_flash_message(
+                "La Planilla no se puede Actualizar",
+                "error"
+            );
         }
+        header("Location: $base_request/planillas.php?id=" . $id_servicio);
+        exit();
     } else {
-        header('Location: /Sistema/index.php?alert=error');
+        header("Location: $base_request/index.php?alert=error");
         exit();
     }
 } else {
-    echo "Error: El formulario no se ha enviado correctamente.";
+    header("Location: $base_request/planillas.php?id=" . $id_servicio);
+    exit();
 }
 ?>

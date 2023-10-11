@@ -43,32 +43,28 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
     // Cierra la conexión cURL
     curl_close($ch);
 
-    // Verifica el código de respuesta HTTP y maneja los casos 200 y 400
-    if ($httpCode == 201) {
+    if ($httpCode === 201) {
 
         create_flash_message(
-            "El Administrador se Registro Exitosamente ",
+            "El administrador se registro exitosamente ",
             "success"
         );
 
-        header('Location: /Sistema/administradores.php');
+        header("Location: $base_request/administradores.php");
         exit();
 
-    } elseif ($httpCode == 400) {
+    } elseif ($httpCode !== 201) {
         create_flash_message(
-            "El Administrador no se pudo Registrar ",
+            "El administrador no se pudo registrar ",
             "error"
         );
 
-        header('Location: /Sistema/administradores.php');
+        header("Location: $base_request/administradores.php");
         exit();
-    } else {
-        // Maneja otros códigos de respuesta HTTP
-        echo "Se produjo un error inesperado. Código de respuesta HTTP: " . $httpCode;
     }
 } else {
     // El archivo de cookies no existe o está vacío
-    header('Location: /Sistema/index.php?alert=error');
+    header("Location: $base_request/index.php?alert=error");
     exit();
 }
 ?>

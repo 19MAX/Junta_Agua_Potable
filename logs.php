@@ -29,19 +29,8 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
     // Cerrar la conexión cURL
     curl_close($ch);
 
-    // Verificar el código de respuesta HTTP
-    if ($httpCode === 200) {
-        
-
-    } elseif ($httpCode === 400) {
-
-        
-    } else {
-        // Otro código de respuesta HTTP
-        echo "Se produjo un error inesperado. Código de respuesta HTTP: " . $httpCode;
-    }
 } else {
-    header('Location: /Sistema/index.php?alert=error');
+    header("Location: $base_request/index.php?alert=error");
     exit();
 }
 ?>

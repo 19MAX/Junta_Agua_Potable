@@ -3,8 +3,6 @@ include "APIurls.php";
 
 if ($_GET) {
     $id = $_GET['id'];
-    
-    
     if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
         // URL de la API que deseas consultar
         $url = BASE . "/clientes/get/" . $id;
@@ -19,11 +17,6 @@ if ($_GET) {
 
         // Realiza la solicitud y guarda la respuesta en una variable
         $response = curl_exec($ch);
-
-        // Verifica si hubo algún error en la solicitud
-        if (curl_errno($ch)) {
-            echo 'Error en la solicitud cURL: ' . curl_error($ch);
-        }
 
         // Cierra la conexión cURL
         curl_close($ch);
@@ -44,12 +37,9 @@ if ($_GET) {
             echo '<p>Error: No se pudo obtener la información del cliente.</p>';
         }
     } else {
-        
-    header('Location: /Sistema/index.php?alert=error');
-    exit();
+        header("Location: $base_request/index.php?alert=error");
+        exit();
     }
-} else {
-    echo "No se proporcionó ningún parámetro GET.";
 }
 ?>
 

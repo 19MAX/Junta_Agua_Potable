@@ -4,32 +4,26 @@
 // URL a la que deseas hacer la solicitud GET
 $url = BASE . '/servicios/get/all';
 if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
-// Inicializar cURL
-$ch = curl_init($url);
+    // Inicializar cURL
+    $ch = curl_init($url);
 
-// Configurar opciones de cURL
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Devolver la respuesta como una cadena en lugar de imprimir directamente
-curl_setopt($ch, CURLOPT_HTTPGET, true); // Usar el método GET
-curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile); // Lee las cookies desde el archivo en solicitudes posteriores
+    // Configurar opciones de cURL
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Devolver la respuesta como una cadena en lugar de imprimir directamente
+    curl_setopt($ch, CURLOPT_HTTPGET, true); // Usar el método GET
+    curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile); // Lee las cookies desde el archivo en solicitudes posteriores
 
-// Realizar la solicitud cURL
-$response = curl_exec($ch);
+    // Realizar la solicitud cURL
+    $response = curl_exec($ch);
 
-// Verificar si hubo errores en la solicitud
-if (curl_errno($ch)) {
-    echo 'Error en la solicitud cURL: ' . curl_error($ch);
-}
+    // Cerrar la sesión cURL
+    curl_close($ch);
 
-// Cerrar la sesión cURL
-curl_close($ch);
-
-$response = json_decode($response, true);
+    $response = json_decode($response, true);
 
 } else {
     // Las cookies no están definidas o están vacías
-    
-header('Location: /Sistema/index.php?alert=error');
-exit();
+    header("Location: $base_request/index.php?alert=error");
+    exit();
 }
 
 ?>
@@ -38,6 +32,9 @@ exit();
 
 <div class="container-fluid px-4">
     <h1 class="mt-4">Servicios y Generar Planillas</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="principal.php">Regresar</a></li>
+    </ol>
 
     <div>
         <!-- Content Row -->
@@ -49,7 +46,6 @@ exit();
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between shadow-sm">
                         <h6 class="m-0 font-weight-bold text-primary">Servicios</h6>
                         <div class="dropdown no-arrow">
-                           
                         </div>
                     </div>
                     <!-- Card Body -->

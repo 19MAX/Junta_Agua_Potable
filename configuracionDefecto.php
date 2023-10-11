@@ -1,6 +1,5 @@
 <?php
-include "APIurls.php"; 
-
+include "APIurls.php";
 include "flash_messages.php";
 
 $message = '';
@@ -9,7 +8,6 @@ $flash_message = display_flash_message();
 if (isset($flash_message)) {
     $message = $flash_message['message'];
     $type = $flash_message['type'];
-
 }
 // URL a la que deseas hacer la solicitud GET
 $url = BASE . '/configuracion/get/default';
@@ -27,11 +25,6 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
     // Realizar la solicitud cURL y obtener la respuesta
     $defecto = curl_exec($ch);
 
-    // Verificar si hubo errores en la solicitud
-    if (curl_errno($ch)) {
-        echo 'Error cURL: ' . curl_error($ch);
-    }
-
     // Cerrar la sesión cURL
     curl_close($ch);
 
@@ -48,12 +41,10 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
         $valor_consumo_base = $configuracion['valor_consumo_base'];
         $valor_exedente = $configuracion['valor_exedente'];
         $reconexion = $configuracion['reconexion'];
-    } else {
-        echo '<p>Error: No se pudo obtener la información del cliente.</p>';
     }
 } else {
     
-    header("Location: /Sistema/index.php?alert=error");
+    header("Location: $base_request/index.php?alert=error");
     exit();
 }
 

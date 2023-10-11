@@ -7,10 +7,7 @@ $flash_message = display_flash_message();
 if (isset($flash_message)) {
     $message = $flash_message['message'];
     $type = $flash_message['type'];
-
 }
-
-
 
 if ($_GET) {
     $id_servicio = $_GET['id'];
@@ -42,7 +39,7 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
     }
 
 } else {
-    header('Location: /Sistema/index.php?alert=error');
+    header("Location: $base_request/index.php?alert=error");
     exit();
 }
 
@@ -59,14 +56,12 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
         <!-- Area Chart -->
         <div class="col-12">
             <div class="card shadow mb-4">
-
                 <!-- Card Header - Dropdown -->
                 <div
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between shadow-sm">
                     <h6 class="m-0 font-weight-bold text-primary">
                         Planillas
                     </h6>
-                    
                 </div>
                 <!-- Card Body -->
                 <div class="table-responsive shadow-sm">
@@ -88,13 +83,11 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
                                 <th class="exclude">Eliminar</th>
                                 <th class="exclude">Actualizar</th>
                                 <th class="exclude">Planillas</th>
-                                            
                             </tr>
                         </thead>
                         <tbody>
                             <?php
                         $response = json_decode($response, true);
-                        
                         foreach ($response['success'] as $dato) {
                             echo '<tr>';
 
@@ -109,11 +102,9 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
                             echo'<td>' .$dato['lectura_actual'] .'</td>';
                             echo'<td>' .$dato['consumo_total'] .'</td>';
                             echo'<td>' .$dato['valor_consumo_total'] .'</td>';
-
-                            
                             echo '<td>';
                             echo '<a href="pagina_procesar.php?id_planilla=' . $dato['id'] . 
-                            '&pagado=' . ($dato['pagado'] ? '0' : '1') . 
+                            '&pagado=' . ($dato['pagado'] ? '0' : '1') .
                             '&id_servicio=' . $dato['id_servicio'] . '" class="btn btn-' . ($dato['pagado'] ? 'success' : 'danger') . ' m-1" title="' . ($dato['pagado'] ? 'Pagado' : 'No Pagado') . '">';
                             echo '<i class="fa ' . ($dato['pagado'] ? 'fa-check-circle' : 'fa-times-circle') . '"></i>'; // Cambiamos el contenido por el icono
                             echo '</a>';
@@ -263,7 +254,7 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
 <script>
     $(document).ready(function () {
         showFlashMessages('<?php echo $message; ?>', '<?php echo $type; ?>');
-        
+
         $('.open-confirm-modal').click(function () {
             var idPlanilla = $(this).data('id-planilla');
             var idServicio = $(this).data('id-servicio');
@@ -300,7 +291,7 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
 
         // Modifica el valor del campo de entrada en el formulario modal
         document.getElementById('lectura_actual_modal').value = nueva_lectura;
-        
+
         document.getElementById('id_servicio').value = id_servicio;
     }
 </script>

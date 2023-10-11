@@ -1,7 +1,7 @@
 function showFlashMessages (message, type){
     var alerta = message;
     if (alerta!='') {
-        var tipo = type; 
+        var tipo = type;
         if (tipo=="error") {
             toastr.error('',alerta,{
                 "closeButton": true,
@@ -26,6 +26,5 @@ function showFlashMessages (message, type){
                 "extendedTimeOut": "1000",
             });
         }
-        
     }
 }

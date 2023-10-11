@@ -2,6 +2,9 @@
 include "flash_messages.php";
 include "APIurls.php";
 
+ini_set('display_errors',1);
+error_reporting(E_ALL);
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Verificar si el archivo de cookies existe y no está vacío
     if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
@@ -27,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             'contado_conexion'=> $contado_conexion,
             'financiamiento_conexion'=> $financiamiento_conexion
         );
- 
+
         // URL de la API o servidor al que deseas enviar la solicitud cURL
         $url = BASE . '/servicios/new';
 
@@ -47,44 +50,30 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         // Ejecutar la solicitud cURL
         $response = curl_exec($ch);
-        
+
         // Cerrar la sesión cURL
         curl_close($ch);
-        
 
-        // Comprobar si hay errores en la solicitud cURL
-        if (curl_errno($ch)) {
-            echo 'Error en la solicitud cURL: ' . curl_error($ch);
-        } else {
-            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-            // Procesar la respuesta según el código de respuesta HTTP
-            if ($httpCode === 201) {
+        // Procesar la respuesta según el código de respuesta HTTP
+        if ($httpCode === 201) {
 
-                create_flash_message(
-                    "Servicio Registrado Exitosamente",
-                    "success"
-                );
-
-                header('Location: /Sistema/servicios.php?id=' . $id_cliente . '&nombre=' . $nombre);
-                exit();
-            } elseif ($httpCode === 400) {
-                
-                create_flash_message(
-                    "Servicio No Registrado ",
-                    "error"
-                );
-                header('Location: /Sistema/servicios.php?id=' . $id_cliente . '&nombre=' . $nombre);
-
-            } else {
-                // Otros códigos de respuesta: Puedes manejarlos según tus necesidades
-                echo 'Error desconocido: Código de respuesta HTTP ' . $httpCode;
-            }
+            create_flash_message(
+                "Servicio Registrado Exitosamente",
+                "success"
+            );
+        } else{
+            create_flash_message(
+                "Servicio No Registrado ",
+                "error"
+            );
         }
-
+        header("Location: $base_request/servicios.php?id=" . $id_cliente . '&nombre=' . $nombre);
+        exit();
     } else {
         // El archivo de cookies no existe o está vacío
-        header('Location: /Sistema/index.php?alert=error');
+        header("Location: $base_request/index.php?alert=error");
         exit();
     }
 }

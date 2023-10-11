@@ -1,8 +1,8 @@
+<?php include("APIurls.php");
 
-<?php include("APIurls.php"); ?>
-
-<?php 
-
+if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
+    header("Location: $base_request/principal.php");
+}
 // Recupera el valor del parámetro "alert" de la URL
 $alertType = isset($_GET['alert']) ? $_GET['alert'] : '';
 
@@ -25,69 +25,50 @@ if (array_key_exists($alertType, $alertClasses)) {
 }
 
 
-
-
 // URL de la API METODO POST
 $url = BASE . "/auth/sign_in";
 
 //Almaceno por metodo POST
 if ($_POST) {
-$usuario = $_POST['usuario'];
-$clave = $_POST['clave'];
+    $usuario = $_POST['usuario'];
+    $clave = $_POST['clave'];
 
-// Datos en formato JSON que voy a enviar a la solicitud
-$data = array(
+    // Datos en formato JSON que voy a enviar a la solicitud
+    $data = array(
     "username" => $usuario,
     "password" => $clave
-  );
-  
+    );
 
-  $curl = curl_init($url);
+    $ch = curl_init();
 
-  curl_setopt($curl, CURLOPT_POST, true);
-  curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
-  
-  curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-  
-  // Agregar encabezados si es necesario (por ejemplo, encabezado JSON) 
-  curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json')); 
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_HEADER, 0);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+    // Configuración para seguir redirecciones
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-  curl_setopt($curl, CURLOPT_COOKIEJAR, $cookieFile); // Almacena las cookies en el archivo
+    // Agregar encabezados si es necesario (por ejemplo, encabezado JSON)
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
 
- 
+    curl_setopt($ch, CURLOPT_COOKIEJAR, $cookieFile);
+    curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile);
 
-  $response = curl_exec($curl);
+    $response = curl_exec($ch);
 
-  // Obtener el código de respuesta HTTP
-  $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-  
-  // Verificar si la solicitud fue exitosa (por ejemplo, si el código de respuesta es 200)
-  if ($httpCode === 200) {
-      // Procesar la respuesta (puede ser JSON, XML u otro formato)
-      $responseData = json_decode($response);
-  
-      // Hacer algo con los datos de respuesta
-      header("Location: principal.php");
-      exit;
-      
-  } elseif ($httpCode === 400) {
-    $responseData = json_decode($response);
+    // Obtener el código de respuesta HTTP
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    // Verificar si la solicitud fue exitosa (por ejemplo, si el código de respuesta es 200)
+    if ($httpCode === 200) {
+        $cookieInfo = curl_getinfo($ch, CURLINFO_COOKIELIST);
+        file_put_contents($cookieFile, $cookieInfo[0], FILE_APPEND);
 
-    // Manejar errores en función del código de respuesta
-    echo '<div class="alert alert-danger" role="alert">';
-    if (isset($responseData->error)) {
-        echo $responseData->error;
-    } else {
-        echo 'Error desconocido'; // Mensaje de error predeterminado si no se encuentra "error" en la respuesta
+        header("Location: $base_request/principal.php");
     }
-    echo '</div>';
-}
 
-  
-  // Cerrar la sesión cURL
-  curl_close($curl);
+    // Cerrar la sesión cURL
+    curl_close($ch);
 }
-
 
 ?>
 
@@ -184,7 +165,5 @@ $data = array(
                 </footer>
             </div>
         </div>
-
-        
 
 <?php include("plantilla/footer.php");?>

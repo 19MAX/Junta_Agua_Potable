@@ -1,5 +1,9 @@
 <?php
 include "APIurls.php";
+include "flash_messages.php";
+
+ini_set('display_errors',1);
+error_reporting(E_ALL);
 
 if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
     if ($_POST) {
@@ -41,18 +45,20 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
     // Comprueba si la solicitud fue exitosa (código de respuesta 200) o si hubo un error (código de respuesta 400)
     if ($httpCode === 200) {
         // La solicitud fue exitosa
-
-        echo "Solicitud exitosa. Respuesta: " . $response;
-    } elseif ($httpCode === 400) {
-        
-        // Hubo un error en la solicitud
-        echo "Error en la solicitud. Respuesta: " . $response;
-    } else {
-        // Otro código de respuesta HTTP
-        echo "Se produjo un error inesperado. Código de respuesta HTTP: " . $httpCode;
+        create_flash_message(
+            'Contraseña actualizada',
+            "success"
+        );
+    } elseif ($httpCode !== 200) {
+        create_flash_message(
+            'No fue posible actualizar la contraseña',
+            "error"
+        );
     }
+    header("Location: $base_request/administradores.php");
+    exit();
 } else {
-    header('Location: /Sistema/index.php?alert=error');
+    header("Location: $base_request/index.php?alert=error");
     exit();
 }
 ?>

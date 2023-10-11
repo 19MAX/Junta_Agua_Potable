@@ -1,6 +1,16 @@
-<?php include "APIurls.php"; ?>
-
 <?php
+include "APIurls.php"; 
+
+include "flash_messages.php";
+
+$message = '';
+$type = '';
+$flash_message = display_flash_message();
+if (isset($flash_message)) {
+    $message = $flash_message['message'];
+    $type = $flash_message['type'];
+
+}
 // URL a la que deseas hacer la solicitud GET
 $url = BASE . '/configuracion/get/default';
 
@@ -43,7 +53,7 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
     }
 } else {
     
-    header('Location: /Sistema/index.php?alert=error');
+    header("Location: /Sistema/index.php?alert=error");
     exit();
 }
 

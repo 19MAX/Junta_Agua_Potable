@@ -1,6 +1,6 @@
 
 $(document).ready( function () {
-$('.crud-table').addClass('table table-bordered table-hover');
+$('.crud-table').addClass('table table-striped table-bordered table-hover');
 
 
 $('#tabla_clientes').DataTable({
@@ -269,5 +269,111 @@ $('#tabla_logs').DataTable({
         ],
         lengthMenu: [ 10, 25, 50, 100 ]
     } );
+
+
+    $('#tabla_financiamiento').DataTable({
+        language:{
+            zeroRecords:'No hay coincidencias',
+            info:'Mostrando _END_ resultados de _MAX_',
+            infoEmpty:'No hay datos disponibles',
+            infoFiltered:'(Filtrado de _MAX_ registros totales)',
+            search:'Buscar',
+            emptyTable:     "No existen registros",
+            paginate: {
+                first:      "Primero",
+                previous:   "Anterior",
+                next:       "Siguiente",
+                last:       "Anterior"
+            },
+        },
+        responsive: true,
+        dom: 'Bfrtip',
+        buttons: [
+            'pageLength',
+            { extend: 'excelHtml5', text:'<i class="fa-lg text-success fa-solid fa-file-excel"></i>',
+            exportOptions: {
+                columns: ':not(.exclude)'
+            }
+            },
+            { extend: 'print', text: '<i class="fa-lg text-danger fa-solid fa-print"></i>',
+                exportOptions: {
+                    columns: ':not(.exclude)'
+                }
+            },
+            
+        ],
+        lengthMenu: [ 10, 25, 50, 100 ]
+    } );
+
+
+    $('#tabla_reconexion').DataTable({
+        language:{
+            zeroRecords:'No hay coincidencias',
+            info:'Mostrando _END_ resultados de _MAX_',
+            infoEmpty:'No hay datos disponibles',
+            infoFiltered:'(Filtrado de _MAX_ registros totales)',
+            search:'Buscar',
+            emptyTable:     "No existen registros",
+            paginate: {
+                first:      "Primero",
+                previous:   "Anterior",
+                next:       "Siguiente",
+                last:       "Anterior"
+            },
+        },
+        responsive: true,
+        dom: 'Bfrtip',
+        buttons: [
+            'pageLength',
+            { extend: 'excelHtml5', text:'<i class="fa-lg text-success fa-solid fa-file-excel"></i>',
+            exportOptions: {
+                columns: ':not(.exclude)'
+            }
+            },
+            { extend: 'print', text: '<i class="fa-lg text-danger fa-solid fa-print"></i>',
+                exportOptions: {
+                    columns: ':not(.exclude)'
+                }
+            },
+            
+        ],
+        lengthMenu: [ 10, 25, 50, 100 ]
+    } );
+
+
+    $('#tabla_conexion').DataTable({
+        language:{
+            zeroRecords:'No hay coincidencias',
+            info:'Mostrando _END_ resultados de _MAX_',
+            infoEmpty:'No hay datos disponibles',
+            infoFiltered:'(Filtrado de _MAX_ registros totales)',
+            search:'Buscar',
+            emptyTable:     "No existen registros",
+            paginate: {
+                first:      "Primero",
+                previous:   "Anterior",
+                next:       "Siguiente",
+                last:       "Anterior"
+            },
+        },
+        responsive: true,
+        dom: 'Bfrtip',
+        buttons: [
+            'pageLength',
+            { extend: 'excelHtml5', text:'<i class="fa-lg text-success fa-solid fa-file-excel"></i>',
+            exportOptions: {
+                columns: ':not(.exclude)'
+            }
+            },
+            { extend: 'print', text: '<i class="fa-lg text-danger fa-solid fa-print"></i>',
+                exportOptions: {
+                    columns: ':not(.exclude)'
+                }
+            },
+            
+        ],
+        lengthMenu: [ 10, 25, 50, 100 ]
+    } );
+    
 
 } );

@@ -68,13 +68,13 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
 <div class="container-fluid px-4">
 <script src="js/flash_messages.js"></script>
     <h3 class="mt-4">Junta Administradora de Agua Potable</h3>
-    <ol class="breadcrumb mb-4">
+    <ol class="breadcrumb mb-4 shadow-sm">
         <li class="breadcrumb-item active">Estadisticas</li>
     </ol>
     <div class="row">
                             <!-- Earnings (Monthly) Card Example -->
-                                <div class="col-xl-4 col-md-6 mb-4 ">
-                                    <div class="card shadow border-left-primary py-2">
+                                <div class="col-xl-4 col-md-6 mb-4">
+                                    <div class="card shadow-sm  border-left-primary py-2">
                                         <div class="card-body">
                                             <div class="row no-gutters  align-items-center">
                                                 <div class="col ">
@@ -93,7 +93,7 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
 
                                 <!-- Earnings (Monthly) Card Example -->
                                 <div class="col-xl-4 col-md-6 mb-4">
-                                    <div class="card border-left-success shadow h-100 py-2">
+                                    <div class="card border-left-success shadow-sm  h-100 py-2">
                                         <div class="card-body">
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
@@ -114,7 +114,7 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
 
                                 <!-- Pending Requests Card Example -->
                                 <div class="col-xl-4 col-md-12 mb-4" >
-                                    <div class="card border-left-warning shadow h-100 py-2">
+                                    <div class="card border-left-warning shadow-sm  h-100 py-2">
                                         <div class="card-body">
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
@@ -133,13 +133,13 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
     <div class="row">
         <!-- Contenedor de tablas -->
         <div class="col-12">
-            <div class="card">
-                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <div class="card shadow">
+                    <div class="card-header bg-white py-3 d-flex flex-row align-items-center justify-content-between shadow-sm">
                     <h6 class="m-0 font-weight-bold text-primary">Clientes </h6>
 
                 </div>
                 
-                <div class="table-responsive crud-table">
+                <div class="table-responsive crud-table shadow-sm">
                     <table id="tabla_clientes">
                         <thead>
                             <tr>

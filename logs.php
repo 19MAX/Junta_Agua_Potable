@@ -67,7 +67,7 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
                         </div>
                     </div>
                     <!-- Card Body -->
-                    <div class="table-responsive ">
+                    <div class="table-responsive shadow-sm">
                         <table id="tabla_logs" class="crud-table">
                             <thead>
                                 <tr>

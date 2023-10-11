@@ -1,6 +1,6 @@
-<?php 
+<?php
 
-include "APIurls.php"; 
+include "APIurls.php";
 // URL a la que deseas hacer la solicitud GET
 $url = BASE . '/pagos/contado/get/all';
 
@@ -25,7 +25,7 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
     if ($httpCode == 200) {
         // El servidor respondió correctamente (código 200)
         $response = json_decode($response, true);
-        
+
     } elseif ($httpCode == 400) {
         // Error 400: Solicitud incorrecta
         echo 'Error 400: Solicitud incorrecta';
@@ -43,9 +43,8 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
 <?php include("plantilla/header.php") ?>
 
 <div class="container-fluid px-4">
-    <h1 class="mt-4">Conexion</h1>
-    
-<script src="js/flash_messages.js"></script>
+    <h1 class="mt-4">Conexion al Contado</h1>
+
     <div>
         <!-- Content Row -->
         <div class="row">
@@ -53,21 +52,66 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
             <div class="col-xl-12 col-lg-12">
                 <div class="card shadow mb-4">
                     <!-- Card Header - Dropdown -->
-                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        <h6 class="m-0 font-weight-bold text-primary">Conexion</h6>
-                        <?php var_dump ($response); ?>
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between shadow-sm">
+                        <h6 class="m-0 font-weight-bold text-primary">Conexion al Contado</h6>
+
                     </div>
                     <!-- Card Body -->
-                    <div class="table-responsive ">
+                    <div class="table-responsive shadow-sm">
                         <table id="tabla_conexion" class="crud-table">
                             <thead>
                                 <tr>
-                                    <th>Id</th>
-                                    <th>Conexion</th>
+                                    <th>ID Servicio</th>
+                                    <th>N conexion</th>
+                                    <th>N medidor</th>
+                                    <th>nombres</th>
+                                    <th>apellidos</th>
+                                    <th>fecha_emision</th>
+                                    <th>hora_emision</th>
+                                    <th>total</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                <?php
+                                foreach ($response["success"] as $registro) {
+                                    $id = $registro["id"];
+                                    $servicio = $registro["servicio"];
+                                    $cliente = $registro["cliente"];
+                                    $fecha_emision = $registro["fecha_emision"];
+                                    $hora_emision = $registro["hora_emision"];
+                                    $total =(float) $registro["total"];
+
+                                    // Accede a los datos dentro de "servicio"
+                                    $id_servicio = $servicio["id"];
+                                    $n_conexion = $servicio["n_conexion"];
+                                    $n_medidor = $servicio["n_medidor"];
+                                    $direccion = $servicio["direccion"];
+                                    $estado = $servicio["estado"];
+                                    $lectura_anterior = $servicio["lectura_anterior"];
+
+                                    // Accede a los datos dentro de "cliente"
+                                    $id_cliente = $cliente["id"];
+                                    $cedula = $cliente["cedula"];
+                                    $nombres = $cliente["nombres"];
+                                    $apellidos = $cliente["apellidos"];
+                                    $telefono = $cliente["telefono"];
+
+                                     echo '<tr>';
+                                     echo'<td>' .$id_servicio .'</td>';
+                                     echo'<td>' .$n_conexion .'</td>';
+                                     echo'<td>' .$n_medidor .'</td>';
+                                     echo'<td>' .$nombres .'</td>';
+                                     echo'<td>' .$apellidos .'</td>';
+                                     echo'<td>' .$fecha_emision .'</td>';
+                                     echo'<td>' .$hora_emision .'</td>';
+                                     echo'<td>' .$total .'</td>';
+
                             
+
+                                    echo '</tr>';
+                                }
+                                ?>
+
                             </tbody>
                         </table>
                     </div>
@@ -76,6 +120,5 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
         </div>
     </div>
 </div>
-
 
 <?php include("plantilla/footer.php");?>

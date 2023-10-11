@@ -60,20 +60,16 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
         <div class="col-12">
             <div class="card shadow mb-4">
 
-
-            
                 <!-- Card Header - Dropdown -->
                 <div
-                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between shadow-sm">
                     <h6 class="m-0 font-weight-bold text-primary">
                         Planillas
                     </h6>
                     
-                    
-
                 </div>
                 <!-- Card Body -->
-                <div class="table-responsive">
+                <div class="table-responsive shadow-sm">
                 <table id="tabla_planilla" class="crud-table">
                         <thead>
                             <tr>

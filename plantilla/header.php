@@ -55,8 +55,8 @@
     <body class="sb-nav-fixed">
         <nav class=" sb-topnav navbar navbar-expand navbar-light bg-primary shadow">
             <!-- Navbar Brand-->
-            <a class=" navbar-brand text-light text-lg" href="principal.php">
-            <img src="plantilla/letraAgua.png" alt="" class=" img-fluid w-50 h-50" > 
+            <a class=" navbar-brand" href="principal.php">
+            <img src="plantilla/imagen2.png" class=" img-fluid w-50 h-25 pb-4 pt-4 pl-0 pr-4" > 
             </a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
@@ -66,7 +66,8 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle text-white" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        
+                        <li><a class="dropdown-item" href="configuracion.php">Configuracion</a></li>
+                        <li><hr class="dropdown-divider" /></li>
                         <li><a class="dropdown-item" href="salir.php">Salir</a></li>
                     </ul>
                 </li>
@@ -95,14 +96,14 @@
                             <hr class="bg-white ml-3 mr-3 mb-2 mt-2">
 
                             <a class="nav-link " href="pendiente.php" >
-                                <div class="sb-nav-link-icon text-gray-300"><i class="fas fa-clipboard-list  text-gray-300"></i></div>
+                                <div class="sb-nav-link-icon text-gray-300"><i class="fas fa-checklist text-gray-300"></i></div>
                                 Planillas Pendientes
                             </a>
                             <hr class="bg-white  ml-3 mr-3 mb-1 mt-1">
 
                             <a class="nav-link " href="servicios2.php" >
                                 <div class="sb-nav-link-icon text-gray-300"><i class="fas fa-clipboard-list  text-gray-300"></i></div>
-                                Servicios
+                                Servicios Y Generar Planillas
                             </a>
                             <hr class="bg-white  ml-3 mr-3 mb-2 mt-2">
 
@@ -110,46 +111,32 @@
                                 <div class="sb-nav-link-icon text-gray-300"><i class="fa-solid fa-question text-gray-300"></i></div>
                                 Logs
                             </a>
-                            <hr class="bg-white  ml-3 mr-3 mb-2 mt-2">
+                            <hr class="bg-white  ml-4 mr-4 mb-2 mt-2 ">
                             
-                            <a class="nav-link collapsed " href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
-                                <div class="sb-nav-link-icon"><i class="fas fa-fw fa-cog"></i></div>
-                                Configuracion
-                                <div class="sb-sidenav-collapse-arrow shadow-sm"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="collapsePages">
-                                <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                    
-                                    <a class="nav-link " href="configuracion.php" >
-                                    Configuracion
-                                    </a>
-                                    
-                                </nav>
-                            </div> 
 
                             <a class="nav-link collapsed  shadow-sm" href="#" data-bs-toggle="collapse" data-bs-target="#collapseNewConfig" aria-expanded="false" aria-controls="collapseNewConfig">
-                                <div class="sb-nav-link-icon"><i class="fas fa-fw fa-cog"></i></div>
-                                Pagos Conexion
-                                <div class="sb-sidenav-collapse-arrow shadow-sm"><i class="fas fa-angle-down"></i></div>
+                                <div class="sb-nav-link-icon"><i class="fas fa-dollar-sign text-gray-100"></i></div>
+                                Pagos de Conexion
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapseNewConfig">
                                 <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionNewConfig">
                                     <a class="nav-link " href="conexion.php">
-                                    Conexion
+                                    Conexiones al Contado
                                     </a>
                                 </nav>
                             </div>
                             <div class="collapse" id="collapseNewConfig">
                                 <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionNewConfig">
                                     <a class="nav-link " href="financiamiento.php">
-                                    Financiamiente
+                                    Conexiones con Financiamiento
                                     </a>
                                 </nav>
                             </div>
                             <div class="collapse" id="collapseNewConfig">
                                 <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionNewConfig">
                                     <a class="nav-link " href="reconexion.php">
-                                    Reconexion
+                                    Pagos por Reconexion
                                     </a>
                                 </nav>
                             </div>
@@ -161,5 +148,5 @@
                     </div>
                 </nav>
             </div>
-            <div id="layoutSidenav_content">
+            <div id="layoutSidenav_content" class=" bg-light">
                 <main>

@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title> Junta de Agua Potable</title>
+        <title><?php echo $title;?></title>
         <link rel="icon" href="plantilla/imagen2.png">
 
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
@@ -25,23 +25,19 @@
         <!-- CDN DE PRINTJS.CRABBLY.COM -->
         <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
         <link rel="stylesheet" href="https://printjs-4de6.kxcdn.com/print.min.css">
-        
 
         <script src="js/datatables.js" ></script>
-        
+
         <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js" ></script>
         <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">        
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-        
+
         <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
         <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
 
-
-        
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
@@ -50,11 +46,12 @@
     <body class="sb-nav-fixed">
         <nav class=" sb-topnav navbar navbar-expand navbar-light bg-primary shadow">
             <!-- Navbar Brand-->
-            <a class=" navbar-brand" href="principal.php">
-            <img src="plantilla/imagen2.png" class=" img-fluid w-50 h-25 pb-4 pt-4 pl-0 pr-4" >
+            <a class="navbar-brand" href="principal.php">
+                <img src="plantilla/imagen2.png" class=" img-fluid w-50 h-25 pb-4 pt-4 pl-0 pr-4" >
             </a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+            <p class="text-white font-weight-bold h4 ms-3">Junta Administradora de Agua Potable "La Chongona"</p>
             <!-- Navbar-->
             <ul class="navbar-nav ms-auto  me-0 me-md-3 my-2 my-md-0">
                 <li class="nav-item dropdown">
@@ -76,13 +73,11 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt text-gray-100"></i></div>
                                 Inicio
                             </a>
-                            
                             <a class="nav-link " href="administradores.php" >
                                 <div class="sb-nav-link-icon text-gray-300"><i class="fas fa-user-shield text-gray-300"></i></div>
                                 Administradores
                             </a>
                             <hr class="bg-white ml-3 mr-3 mb-1 mt-1">
-                            
                             <a class="nav-link" href="principal.php" >
                                 <div class="sb-nav-link-icon text-gray-300"><i class="fas fa-user fa-fw"></i></div>
                                 Clientes
@@ -94,7 +89,6 @@
                                 Planillas Pendientes
                             </a>
                             <hr class="bg-white  ml-3 mr-3 mb-1 mt-1">
-
                             <a class="nav-link " href="servicios2.php" >
                                 <div class="sb-nav-link-icon text-gray-300"><i class="fas fa-clipboard-list  text-gray-300"></i></div>
                                 Servicios Y Generar Planillas
@@ -106,7 +100,6 @@
                                 Logs
                             </a>
                             <hr class="bg-white  ml-4 mr-4 mb-2 mt-2 ">
-                            
 
                             <a class="nav-link collapsed  shadow-sm" href="#" data-bs-toggle="collapse" data-bs-target="#collapseNewConfig" aria-expanded="false" aria-controls="collapseNewConfig">
                                 <div class="sb-nav-link-icon"><i class="fas fa-dollar-sign text-gray-100"></i></div>
@@ -134,10 +127,6 @@
                                     </a>
                                 </nav>
                             </div>
-
-                            
-                        
-
                         </div>
                     </div>
                 </nav>

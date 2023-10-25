@@ -1,6 +1,5 @@
 </main>
                 <footer>
-                    
                 </footer>
             </div>
         </div>
@@ -8,15 +7,10 @@
         <script src="js/scripts.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <!-- <script src="js/datatables-simple-demo.js"></script> -->
-
-        
 <!-- Bootstrap core JavaScript-->
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-
-
     </body>
 </html>

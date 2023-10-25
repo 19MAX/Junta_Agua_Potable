@@ -1,7 +1,9 @@
-<?php include("APIurls.php");?>
-
 <?php
-if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
+include "user_session.php";
+include "APIurls.php";
+
+$session_cookie = get_cookied_session();
+if (isset($session_cookie)) {
     // URL a la que deseas hacer la solicitud GET
     $url = BASE. '/general/get/planillas/pendientes'  ;
 
@@ -11,14 +13,13 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
     // Establece las opciones para la sesión CURL
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Devuelve la respuesta como una cadena en lugar de imprimirla
     curl_setopt($ch, CURLOPT_HTTPGET, true); // Utiliza el método GET
-    curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile); // Lee las cookies desde el archivo en solicitudes posteriores
+    curl_setopt($ch, CURLOPT_COOKIE, "session=$session_cookie");
 
     // Ejecuta la solicitud CURL y obtén la respuesta
-    $response = curl_exec($ch);
+    $response = json_decode(curl_exec($ch), true);
 
     curl_close($ch);
 
-    $response = json_decode($response, true);
 } else {
     header("Location: $base_request/index.php?alert=error");
     exit();
@@ -27,7 +28,10 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
 
 ?>
 
-<?php include("plantilla/header.php"); ?>
+<?php
+$title = "Planillas Pendientes";
+include("plantilla/header.php");
+?>
 <div class="container-fluid px-4">
     <h1 class="mt-4">Planillas Pendientes</h1>
     <ol class="breadcrumb mb-4 shadow-sm">

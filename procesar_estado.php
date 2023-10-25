@@ -1,4 +1,5 @@
-<?php 
+<?php
+include "user_session.php";
 include "flash_messages.php";
 include("APIurls.php");
 
@@ -8,10 +9,8 @@ if (isset($_GET['id']) && isset($_GET['id_cliente'])) {
     $estado = ($_GET["estado"] == "1") ? true : false;
     $nombre =$_GET['nombre'];
 
-
-    if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
-        // Las cookies están definidas y no están vacías
-
+    $session_cookie = get_cookied_session();
+    if (isset($session_cookie)) {
         // URL de la API
         $url = BASE . "/servicios/update/estado/" . $id_servicio; // Reemplaza con la URL de tu API
 
@@ -36,10 +35,10 @@ if (isset($_GET['id']) && isset($_GET['id_cliente'])) {
             'Content-Length: ' . strlen($jsonData)
         ]);
 
-        curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile); // Lee las cookies desde el archivo en solicitudes posteriores
+        curl_setopt($ch, CURLOPT_COOKIE, "session=$session_cookie");
 
         // Realizar la solicitud a la API
-        $response = curl_exec($ch);
+        $response = json_decode(curl_exec($ch), true);
 
         // Procesar la respuesta de la API
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -48,12 +47,12 @@ if (isset($_GET['id']) && isset($_GET['id_cliente'])) {
 
         if ($httpCode === 200) {
             create_flash_message(
-                "El Estado se Actualizo Correctamente ",
+                $response['success'],
                 "success"
             );
         } else {
             create_flash_message(
-                "El Estado No se Actualizo ",
+                $response['error'],
                 "error"
             );
         }

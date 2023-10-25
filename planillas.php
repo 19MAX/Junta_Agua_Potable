@@ -1,4 +1,6 @@
-<?php include "APIurls.php";
+<?php
+include "user_session.php";
+include "APIurls.php";
 include "flash_messages.php";
 
 $message = '';
@@ -13,8 +15,8 @@ if ($_GET) {
     $id_servicio = $_GET['id'];
 }
 
-// Verifica si el archivo de cookies existe y no está vacío
-if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
+$session_cookie = get_cookied_session();
+if (isset($session_cookie)) {
     // URL de la API o recurso que deseas consultar
     $url = BASE . '/planillas/get/all/' . $id_servicio; // Reemplaza esto con la URL de tu API o recurso
 
@@ -24,19 +26,12 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
     // Configura la URL y otras opciones
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile); // Lee las cookies desde el archivo en solicitudes posteriores
+    curl_setopt($ch, CURLOPT_COOKIE, "session=$session_cookie"); // Lee las cookies desde el archivo en solicitudes posteriores
 
     // Realiza la solicitud GET y obtiene la respuesta
     $response = curl_exec($ch);
     // Cierra la sesión cURL
     curl_close($ch);
-    
-    // Verifica si la solicitud fue exitosa
-    if ($response === false) {
-        echo "Error en la solicitud cURL: " . curl_error($ch);
-    } else {
-        // Procesa la respuesta de la API aquí
-    }
 
 } else {
     header("Location: $base_request/index.php?alert=error");
@@ -45,7 +40,10 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
 
 ?>
 
-<?php include("plantilla/header.php");?>
+<?php
+$title = 'Planillas';
+include("plantilla/header.php");
+?>
 
 <!-- Begin Page Content -->
 <div class="container-fluid mt-3">
@@ -90,7 +88,6 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
                         $response = json_decode($response, true);
                         foreach ($response['success'] as $dato) {
                             echo '<tr>';
-
                             echo'<td>' .$dato['id'] .'</td>';
                             echo'<td>' .$dato['id_servicio'] .'</td>';
                             echo'<td>' .$dato['fecha_emision'] .'</td>';
@@ -103,45 +100,30 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
                             echo'<td>' .$dato['consumo_total'] .'</td>';
                             echo'<td>' .$dato['valor_consumo_total'] .'</td>';
                             echo '<td>';
-                            echo '<a href="pagina_procesar.php?id_planilla=' . $dato['id'] . 
+                            echo '<a href="pagina_procesar.php?id_planilla=' . $dato['id'] .
                             '&pagado=' . ($dato['pagado'] ? '0' : '1') .
                             '&id_servicio=' . $dato['id_servicio'] . '" class="btn btn-' . ($dato['pagado'] ? 'success' : 'danger') . ' m-1" title="' . ($dato['pagado'] ? 'Pagado' : 'No Pagado') . '">';
                             echo '<i class="fa ' . ($dato['pagado'] ? 'fa-check-circle' : 'fa-times-circle') . '"></i>'; // Cambiamos el contenido por el icono
                             echo '</a>';
                             echo '</td>';
-
-
-
-
-
-
-
                             echo '<td>';
                             echo '<button title="Eliminar Planilla" type="button" class="btn btn-danger m-1 open-confirm-modal" data-toggle="modal" data-target="#confirmModal" data-id-planilla="' . $dato['id'] . '" data-id-servicio="' . $dato['id_servicio'] . '">';
                             echo '<i class="fas fa-trash"></i>';
                             echo '</button>';
                             echo '</td>';
-
-
-
-
-
                             echo '<td>';
                             echo '<button title="Actualizar Lectura" type="button" class="btn btn-warning m-1" data-toggle="modal" data-target="#actualizarP" data-id_servicio="' . $dato['id_servicio'] . '" data-id_planilla="' . $dato['id'] . '" data-lectura_actual="' . $dato['lectura_actual'] . '" onclick="datos(this)">';
                             echo '<i class="fas fa-sync"></i>';
                             echo '</button>';
                             echo '</td>';
-                            
                             echo '<td>';
                             echo '<a href="generarPlanilla.php?id=' . $dato['id'] . '" class="d-none d-sm-inline-block btn btn-block btn-primary " title="Generar Planilla">';
                             echo '<i class="fas fa-lg fa-download "></i> ';
                             echo '</a>';
                             echo '</td>';
-
                             echo '</tr>';
                         }
                             ?>
-
                         </tbody>
                     </table>
                 </div>
@@ -174,14 +156,11 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
                         <input class="form-control"  type="number" name="lectura_actual" id="lectura_actual"/>
                         </div>
                     </div>
-                         
                     <div class="modal-footer">
                         <button type="button" onclick="modal_hide()" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                         <button type="submit" class="btn btn-primary">Guardar cambios</button>
                     </div>
-
                 </form>
-                
             </div>
         </div>
     </div>

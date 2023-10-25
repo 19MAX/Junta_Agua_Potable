@@ -1,6 +1,6 @@
 <?php
-include("obtenerEstadisticas.php");
-
+include "APIurls.php";
+include "user_session.php";
 include "flash_messages.php";
 
 $message = '';
@@ -12,7 +12,8 @@ if (isset($flash_message)) {
 }
 
 // Verifica si el archivo de cookies existe y no está vacío
-if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
+$session_cookie = get_cookied_session();
+if (isset($session_cookie)) {
     $url = BASE . "/clientes/get/all";
 
     // Inicializa cURL
@@ -21,7 +22,7 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
     // Configura las opciones de cURL
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Devuelve la respuesta en lugar de imprimirla
     curl_setopt($ch, CURLOPT_HTTPGET, true); // Configura la solicitud como tipo GET
-    curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile); // Lee las cookies desde el archivo en solicitudes posteriores
+    curl_setopt($ch, CURLOPT_COOKIE, "session=$session_cookie");
 
     // Realiza la solicitud y guarda la respuesta en una variable
     $response = curl_exec($ch);
@@ -44,17 +45,21 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
         }
         $type = 'error';
     }
-
 } else {
     header("Location: $base_request/index.php?alert=error");
     exit();
 }
+include "obtenerEstadisticas.php";
 ?>
 
-<?php include("plantilla/header.php"); ?>
+<?php
+$title = 'Clientes';
+include("plantilla/header.php");
+?>
+
 <div class="container-fluid px-4">
 <script src="js/flash_messages.js"></script>
-    <h3 class="mt-4">Junta Administradora de Agua Potable</h3>
+    <div class="mt-4"></div>
     <ol class="breadcrumb mb-4 shadow-sm">
         <li class="breadcrumb-item active">Estadisticas</li>
     </ol>
@@ -122,7 +127,7 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
                     <h6 class="m-0 font-weight-bold text-primary">Clientes </h6>
 
                 </div>
-                
+
                 <div class="table-responsive crud-table shadow-sm">
                     <table id="tabla_clientes">
                         <thead>
@@ -164,13 +169,11 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
                             echo '</button>';
                             echo '</a>';
                             echo '</td>';
-
                             echo '<td>';
                             echo '<button title="Actualizar cliente" type="button" class="btn btn-warning m-1" data-toggle="modal" data-target="#actualizar" data-id="' . $dato['id'] . '" data-cedula="' . $dato['cedula'] . '" data-nombres="' . $dato['nombres'] . '" data-apellidos="' . $dato['apellidos'] . '" data-telefono="' . $dato['telefono'] . '" onclick="datos(this)">';
                             echo '<i class="fas fa-sync"></i>';
                             echo '</button>';
                             echo '</td>';
- 
                             echo '<td>';
                             echo '<a href="servicios.php?id=' . $dato['id'] . '&nombre=' . $dato['nombres'] . '">';
                             echo '<button title="Servicios del cliente" type="button" class="btn btn-danger m-1">';
@@ -178,11 +181,7 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
                             echo '</button>';
                             echo '</a>';
                             echo '</td>';
-
-
-
                             echo '</tr>';
-
                         }
                         ?>
                         </tbody>
@@ -192,7 +191,6 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
         </div>
     </div>
 </div>
-
 
 
 <div class="modal fade" id="registrar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -256,7 +254,6 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
             </div>
             <div class="modal-body">
                 <form method="POST" action="actualizardatos.php" id="FormularioA">
-                    
                     <input type="hidden" name="cliente_id" value="">
                     <div class="form-floating mb-3">
                         <div >
@@ -285,16 +282,11 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
                         <input class="form-control"  type="text" name="telefono" />
                         </div>
                     </div>
-                        
-                        
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                         <button type="submit" class="btn btn-primary" >Actualizar</button>
                     </div>
-
                 </form>
-
-                
             </div>
         </div>
     </div>
@@ -324,16 +316,13 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
 
     $(document).ready(function() {
         showFlashMessages('<?php echo $message; ?>', '<?php echo $type; ?>');
-        
         $(".open-confirm-modal").click(function() {
             var id = $(this).data("id");
             $("#confirmDelete").attr("href", "eliminar_cliente.php?id=" + id);
         });
     });
-    
     function modal_hide() {
         $('#registrar').modal('hide');
-        console.log();
     }
 
     function datos(button) {
@@ -354,7 +343,6 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
         formulario.apellidos.value = apellidos;
         formulario.telefono.value = telefono;
     }
-
 </script>
 
 

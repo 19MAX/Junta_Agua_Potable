@@ -1,13 +1,12 @@
 <?php
+include "user_session.php";
 include "flash_messages.php";
 include "APIurls.php";
 
-ini_set('display_errors',1);
-error_reporting(E_ALL);
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    // Verificar si el archivo de cookies existe y no está vacío
-    if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
+    $session_cookie = get_cookied_session();
+    if (isset($session_cookie)) {
         $nombre = $_POST["nombre"];
         $id_cliente = (int)$_POST["id_cliente"];
         $n_conexion = (int)$_POST["n_conexion"];
@@ -46,10 +45,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             'Content-Type: application/json',
             'Content-Length: ' . strlen($json_data))
         );
-        curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile); // Lee las cookies desde el archivo en solicitudes posteriores
+        curl_setopt($ch, CURLOPT_COOKIE, "session=$session_cookie");
 
         // Ejecutar la solicitud cURL
-        $response = curl_exec($ch);
+        $response = json_decode(curl_exec($ch),true);
 
         // Cerrar la sesión cURL
         curl_close($ch);
@@ -60,12 +59,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if ($httpCode === 201) {
 
             create_flash_message(
-                "Servicio Registrado Exitosamente",
+                $response['success'],
                 "success"
             );
         } else{
             create_flash_message(
-                "Servicio No Registrado ",
+                $response['error'],
                 "error"
             );
         }
@@ -76,5 +75,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         header("Location: $base_request/index.php?alert=error");
         exit();
     }
+} else {
+    header("Location: $base_request/servicios.php?id=" . $id_cliente . '&nombre=' . $nombre);
+    exit();
 }
 ?>

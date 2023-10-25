@@ -1,34 +1,35 @@
-<?php include_once("APIurls.php") ?>
-
 <?php
-// URL a la que deseas hacer la solicitud GET
-$url = BASE . '/servicios/get/all';
-if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
+include "user_session.php";
+include "APIurls.php";
+
+$session_cookie = get_cookied_session();
+if (isset($session_cookie)) {
+    // URL a la que deseas hacer la solicitud GET
+    $url = BASE . '/servicios/get/all';
     // Inicializar cURL
     $ch = curl_init($url);
 
     // Configurar opciones de cURL
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Devolver la respuesta como una cadena en lugar de imprimir directamente
     curl_setopt($ch, CURLOPT_HTTPGET, true); // Usar el método GET
-    curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile); // Lee las cookies desde el archivo en solicitudes posteriores
+    curl_setopt($ch, CURLOPT_COOKIE, "session=$session_cookie");
 
     // Realizar la solicitud cURL
-    $response = curl_exec($ch);
+    $response = json_decode(curl_exec($ch), true);
 
     // Cerrar la sesión cURL
     curl_close($ch);
-
-    $response = json_decode($response, true);
-
 } else {
-    // Las cookies no están definidas o están vacías
     header("Location: $base_request/index.php?alert=error");
     exit();
 }
 
 ?>
 
-<?php include("plantilla/header.php") ?>
+<?php
+$title = "Servicios";
+include("plantilla/header.php")
+?>
 
 <div class="container-fluid px-4">
     <h1 class="mt-4">Servicios y Generar Planillas</h1>

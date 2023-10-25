@@ -1,8 +1,9 @@
 <?php
+include "user_session.php";
 include "flash_messages.php";
 include "APIurls.php";
 
-if (isset($_GET)) {
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $nombre = $_GET['nombre'];
     $id_principal = $_GET['id_principal'];
     $id_servicio = $_GET['id_servicio'];
@@ -16,7 +17,8 @@ if (isset($_GET)) {
         'id_cliente' => $id_cliente,
     ));
 
-    if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
+    $session_cookie = get_cookied_session();
+    if (isset($session_cookie)) {
         // Inicializa cURL
         $ch = curl_init($api_url);
 
@@ -28,10 +30,11 @@ if (isset($_GET)) {
             'Content-Type: application/json',             // Tipo de contenido JSON
             'Content-Length: ' . strlen($data)           // Longitud del cuerpo de la solicitud
         ));
-        curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile); // Lee las cookies desde el archivo en solicitudes posteriores
+        curl_setopt($ch, CURLOPT_COOKIE, "session=$session_cookie");
 
         // Realiza la solicitud PUT a la API
         $response = curl_exec($ch);
+        $response = json_decode(curl_exec($ch), true);
         // Cierra la sesión cURL
         curl_close($ch);
 
@@ -41,23 +44,23 @@ if (isset($_GET)) {
         // Procesar la respuesta según el código de respuesta HTTP
         if ($httpCode === 200) {
             create_flash_message(
-                "El Servicio se cambio Exitosamente de cliente",
+                $response['success'],
                 "success"
             );
         } else {
             create_flash_message(
-                "El servicio no se cambio de cliente",
+                $response['error'],
                 "error"
             );
         }
         header("Location: $base_request/servicios.php?id=" . $id_principal . '&nombre=' . $nombre);
         exit();
     } else {
-        // El archivo de cookies no existe o está vacío
         header("Location: $base_request/index.php?alert=error");
         exit();
     }
+} else {
+    header("Location: $base_request/servicios.php?id=" . $id_principal . '&nombre=' . $nombre);
+    exit();
 }
-header("Location: $base_request/index.php?alert=error");
-exit();
 ?>

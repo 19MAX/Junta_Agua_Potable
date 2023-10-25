@@ -1,4 +1,5 @@
 <?php
+include "user_session.php";
 include "APIurls.php";
 include "flash_messages.php";
 
@@ -11,17 +12,16 @@ if (isset($flash_message)) {
 
 }
 
-
-if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
-
-    $url = BASE. '/logs/get/all';
+$session_cookie = get_cookied_session();
+if (isset($session_cookie)) {
+    $url = BASE . '/logs/get/all';
 
     $ch = curl_init($url);
 
     // Configurar opciones de cURL
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-    curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile); // Lee las cookies desde el archivo en solicitudes posteriores
+    curl_setopt($ch, CURLOPT_COOKIE, "session=$session_cookie");
     // Ejecutar la solicitud cURL
     $response = curl_exec($ch);
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -36,7 +36,10 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
 ?>
 
 
-<?php include("plantilla/header.php") ?>
+<?php
+$title = "Logs";
+include("plantilla/header.php")
+    ?>
 
 <div class="container-fluid px-4">
     <h1 class="mt-4">Logs</h1>
@@ -52,7 +55,6 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                         <h6 class="m-0 font-weight-bold text-primary">Logs</h6>
                         <div class="dropdown no-arrow">
-                           
                         </div>
                     </div>
                     <!-- Card Body -->
@@ -68,25 +70,23 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
                                 </tr>
                             </thead>
                             <tbody>
-                            <?php
-                        $response = json_decode($response, true);
+                                <?php
+                                $response = json_decode($response, true);
 
-                        foreach ($response['success'] as $dato) {
-                            $detalle = 'Ninguno';
-                            if (isset($dato['detalle'])) {
-                                $dato['detalle'];
-                            }
-                            echo '<tr>';
-                            echo'<td>' .$dato['usuario'] .'</td>';
-                            echo'<td>' .$dato['categoria'] .'</td>';
-                            echo'<td>' .$dato['fecha'] .'</td>';
-                            echo'<td>' .$dato['hora'] .'</td>';
-                            echo'<td>' .$detalle.'</td>';
-                            echo '</tr>';
-
-                        }
- 
-                        ?>
+                                foreach ($response['success'] as $dato) {
+                                    $detalle = 'Ninguno';
+                                    if (isset($dato['detalle'])) {
+                                        $dato['detalle'];
+                                    }
+                                    echo '<tr>';
+                                    echo '<td>' . $dato['usuario'] . '</td>';
+                                    echo '<td>' . $dato['categoria'] . '</td>';
+                                    echo '<td>' . $dato['fecha'] . '</td>';
+                                    echo '<td>' . $dato['hora'] . '</td>';
+                                    echo '<td>' . $detalle . '</td>';
+                                    echo '</tr>';
+                                }
+                                ?>
                             </tbody>
                         </table>
                     </div>
@@ -108,7 +108,8 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
                 <p>¿Estás seguro de que deseas eliminar este registro?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" onclick="modal_hide()" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-default" onclick="modal_hide()"
+                    data-dismiss="modal">Cancelar</button>
                 <a href="eliminarLogs.php" class="btn btn-danger">Eliminar</a>
             </div>
         </div>
@@ -116,15 +117,15 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
 </div>
 
 <script>
-    
+
     $(document).ready(function () {
-    showFlashMessages('<?php echo $message; ?>', '<?php echo $type; ?>');
+        showFlashMessages('<?php echo $message; ?>', '<?php echo $type; ?>');
     });
-    
+
     function modal_hide() {
         $('#eliminar_logs').modal('hide');
-        
+
     }
 </script>
 
-<?php include("plantilla/footer.php");?>
+<?php include("plantilla/footer.php"); ?>

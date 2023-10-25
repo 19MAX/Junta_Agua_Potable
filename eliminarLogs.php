@@ -1,8 +1,10 @@
 <?php
+include "user_session.php";
 include "flash_messages.php";
 include "APIurls.php";
 
-if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
+$session_cookie = get_cookied_session();
+if (isset($session_cookie)) {
     // URL de la API o recurso al que deseas enviar la solicitud DELETE
     $url = BASE . '/logs/delete/old';
 
@@ -13,10 +15,10 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE'); // Establece el método HTTP como DELETE
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile);
+    curl_setopt($ch, CURLOPT_COOKIE, "session=$session_cookie");
 
     // Realiza la solicitud DELETE y obtiene la respuesta
-    $response = curl_exec($ch);
+    $response = json_decode(curl_exec($ch), true);
 
     // Cierra la sesión cURL
     curl_close($ch);
@@ -27,12 +29,12 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
     if ($httpCode === 200) {
 
         create_flash_message(
-            "Logs Eliminados Exitosamente ",
+            $response['success'],
             "success"
         );
     } else {
         create_flash_message(
-            "Logs No Eliminados ",
+            $response['error'],
             "error"
         );
     }

@@ -1,4 +1,5 @@
 <?php
+include "user_session.php";
 include "APIurls.php";
 include "flash_messages.php";
 
@@ -12,15 +13,16 @@ if (isset($flash_message)) {
 // URL a la que deseas hacer la solicitud GET
 $url = BASE . '/configuracion/get/default';
 
+$session_cookie = get_cookied_session();
 // Verifica si el archivo de cookies existe y no está vacío
-if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
+if (isset($session_cookie)) {
     // Inicializar la sesión cURL
     $ch = curl_init($url);
 
     // Configurar las opciones de la solicitud cURL
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Devolver el resultado en lugar de imprimirlo en pantalla
     curl_setopt($ch, CURLOPT_HTTPGET, true); // Establecer el método de solicitud como GET
-    curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile); // Lee las cookies desde el archivo en solicitudes posteriores
+    curl_setopt($ch, CURLOPT_COOKIE, "session=$session_cookie"); // Lee las cookies desde el archivo en solicitudes posteriores
 
     // Realizar la solicitud cURL y obtener la respuesta
     $defecto = curl_exec($ch);
@@ -43,7 +45,6 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
         $reconexion = $configuracion['reconexion'];
     }
 } else {
-    
     header("Location: $base_request/index.php?alert=error");
     exit();
 }

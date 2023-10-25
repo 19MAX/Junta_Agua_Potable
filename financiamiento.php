@@ -1,4 +1,5 @@
-<?php 
+<?php
+include "user_session.php";
 include "APIurls.php";
 include "flash_messages.php";
 
@@ -8,24 +9,23 @@ $flash_message = display_flash_message();
 if (isset($flash_message)) {
     $message = $flash_message['message'];
     $type = $flash_message['type'];
-
 }
 
+$session_cookie = get_cookied_session();
+if (isset($session_cookie)) {
+    // URL a la que deseas hacer la solicitud GET
+    $url = BASE . '/pagos/financiamiento/get/all';
 
-// URL a la que deseas hacer la solicitud GET
-$url = BASE . '/pagos/financiamiento/get/all';
-
-if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
     // Inicializar cURL
     $ch = curl_init($url);
 
     // Configurar opciones de cURL
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Devolver la respuesta como una cadena en lugar de imprimir directamente
     curl_setopt($ch, CURLOPT_HTTPGET, true); // Usar el método GET
-    curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile); // Lee las cookies desde el archivo en solicitudes posteriores
+    curl_setopt($ch, CURLOPT_COOKIE, "session=$session_cookie");
 
     // Realizar la solicitud cURL
-    $response = curl_exec($ch);
+    $response = json_decode(curl_exec($ch), true);
 
     // Verificar el código de respuesta HTTP
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -33,23 +33,22 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
     // Cerrar la sesión cURL
     curl_close($ch);
 
-    if ($httpCode === 200) {
-        // El servidor respondió correctamente (código 200)
-        $response = json_decode($response, true);
-    } else {
+    if ($httpCode !== 200) {
         create_flash_message(
-            'No se pudo cargar los datos',
+            $response['error'],
             'error'
         );
     }
-
 } else {
-    // Las cookies no están definidas o están vacías
     header("Location: $base_request/index.php?alert=error");
     exit();
 }
 ?>
-<?php include("plantilla/header.php") ?>
+
+<?php
+$title = "Financiamiento de conexiones";
+include("plantilla/header.php")
+?>
 
 <div class="container-fluid px-4">
     <h1 class="mt-4">Conexion con Financiamiento</h1>

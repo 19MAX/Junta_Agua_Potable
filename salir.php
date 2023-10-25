@@ -1,9 +1,9 @@
-<?php include "APIurls.php";?>
-
 <?php
+include "user_session.php";
+include "APIurls.php";
 
-// Verifica si el archivo de cookies existe y no está vacío
-if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
+$session_cookie = get_cookied_session();
+if (isset($session_cookie)) {
     try {
         // URL a la que deseas hacer la solicitud
         $url = BASE . '/auth/logout';
@@ -14,7 +14,7 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
         // Configura las opciones de cURL
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Devuelve la respuesta como una cadena en lugar de imprimirla
         curl_setopt($ch, CURLOPT_POST, true); // Utiliza el método POST
-        curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile); // Lee las cookies desde el archivo en solicitudes posteriores
+        curl_setopt($ch, CURLOPT_COOKIE, "session=$session_cookie");
 
         // Ejecuta la solicitud cURL y obtén la respuesta
         $response = curl_exec($ch);
@@ -27,18 +27,16 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
         // Cierra la sesión cURL
         curl_close($ch);
 
-        // Borra el contenido del archivo de cookies
-        file_put_contents($cookieFile, '');
-
         // Redirige a la página de inicio de sesión
+        delete_session();
         header("Location: $base_request/index.php");
         exit();
     } catch (Exception $e) {
         header("Location: $base_request/principal.php");
+        exit();
     }
 } else {
-    // El archivo de cookies no existe o está vacío, realiza la acción que desees en este caso
-    // Por ejemplo, puedes redirigir a la página de inicio de sesión o mostrar un mensaje de error.
+    delete_session();
     header("Location: $base_request/index.php");
     exit();
 }

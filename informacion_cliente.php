@@ -1,9 +1,13 @@
 <?php
+include "user_session.php";
 include "APIurls.php";
+include "flash_messsages.php";
 
-if ($_GET) {
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $id = $_GET['id'];
-    if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
+
+    $session_cookie = get_cookied_session();
+    if (isset($session_cookie)) {
         // URL de la API que deseas consultar
         $url = BASE . "/clientes/get/" . $id;
 
@@ -13,7 +17,7 @@ if ($_GET) {
         // Configura las opciones de cURL
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Devuelve la respuesta en lugar de imprimirla
         curl_setopt($ch, CURLOPT_HTTPGET, true); // Configura la solicitud como tipo GET
-        curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile); // Lee las cookies desde el archivo en solicitudes posteriores
+        curl_setopt($ch, CURLOPT_COOKIE, "session=$session_cookie");
 
         // Realiza la solicitud y guarda la respuesta en una variable
         $response = curl_exec($ch);
@@ -34,16 +38,25 @@ if ($_GET) {
             $apellidos = $cliente['apellidos'];
             $telefono = $cliente['telefono'];
         } else {
-            echo '<p>Error: No se pudo obtener la información del cliente.</p>';
+            create_flash_message(
+                'No se pudo obtener la información del cliente',
+                'error'
+            );
         }
     } else {
         header("Location: $base_request/index.php?alert=error");
         exit();
     }
+} else {
+    header("Location: $base_request/principal.php");
+    exit();
 }
 ?>
 
-<?php include("plantilla/header.php"); ?>
+<?php
+$title = 'Información cliente';
+include("plantilla/header.php");
+?>
 
 <div class="col-12 text-center">
 

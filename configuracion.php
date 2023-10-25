@@ -1,8 +1,9 @@
-<?php include("configuracionDefecto.php");?>
+<?php
+$title = "Configuracion por defecto";
+include("configuracionDefecto.php");
+include("plantilla/header.php");
+?>
 
-
-
-<?php include("plantilla/header.php");?>
 <div class="container-fluid">
 <script src="js/flash_messages.js"></script>
 <button type="button" class="btn btn-info m-3" data-toggle="modal" data-target="#modalConf">

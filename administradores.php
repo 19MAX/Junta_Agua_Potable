@@ -1,4 +1,5 @@
 <?php
+include "user_session.php";
 include "APIurls.php";
 include "flash_messages.php";
 
@@ -11,16 +12,16 @@ if (isset($flash_message)) {
 
 }
 
-if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
-
-    $url = BASE. '/admin/get/all';
+$session_cookie = get_cookied_session();
+if (isset($session_cookie)) {
+    $url = BASE . '/admin/get/all';
 
     $ch = curl_init($url);
 
     // Configurar opciones de cURL
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-    curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile); // Lee las cookies desde el archivo en solicitudes posteriores
+    curl_setopt($ch, CURLOPT_COOKIE, "session=$session_cookie");
     // Ejecutar la solicitud cURL
     $response = curl_exec($ch);
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -40,12 +41,15 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
 ?>
 
 
-<?php include("plantilla/header.php") ?>
+<?php
+$title = "Administradores";
+include "plantilla/header.php";
+?>
 
 <div class="container-fluid px-4">
     <h1 class="mt-4">Administradores</h1>
 
-<script src="js/flash_messages.js"></script>
+    <script src="js/flash_messages.js"></script>
     <div>
         <!-- Content Row -->
         <div class="row">
@@ -68,28 +72,28 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
                                 </tr>
                             </thead>
                             <tbody>
-                            <?php
-                        $response = json_decode($response, true);
+                                <?php
+                                $response = json_decode($response, true);
 
-                        foreach ($response['success'] as $dato) {
-                            echo '<tr>';
-                            echo'<td>' .$dato['id'] .'</td>';
-                            echo'<td>' .$dato['username'] .'</td>';
-                            echo '<td>';
-                            echo '<button title="Nueva contraseña para un administrador" type="button" class="btn btn-warning m-1 open-modal" data-toggle="modal" data-target="#actualizar_contraseña" data-id="' . $dato['id'] . '"onclick="password(this)">';
-                            echo '<i class="fas fa-sync"></i>';
-                            echo '</button>';
-                            echo '</td>';
+                                foreach ($response['success'] as $key => $dato) {
+                                    echo '<tr>';
+                                    echo '<td>' . $key + 1 . '</td>';
+                                    echo '<td>' . $dato['username'] . '</td>';
+                                    echo '<td>';
+                                    echo '<button title="Nueva contraseña para un administrador" type="button" class="btn btn-warning m-1 open-modal" data-toggle="modal" data-target="#actualizar_contraseña" data-id="' . $dato['id'] . '"onclick="password(this)">';
+                                    echo '<i class="fas fa-sync"></i>';
+                                    echo '</button>';
+                                    echo '</td>';
 
-                            echo '<td>';
-                            echo '<button title="Eliminar Cliente" type="button" class="btn btn-danger m-1 open-confirm-modal" data-toggle="modal" data-target="#confirmModal_eliminar" data-id="' . $dato['id'] . '">';
-                            echo '<i class="fas fa-trash"></i>';
-                            echo '</button>';
-                            echo '</td>';
+                                    echo '<td>';
+                                    echo '<button title="Eliminar Cliente" type="button" class="btn btn-danger m-1 open-confirm-modal" data-toggle="modal" data-target="#confirmModal_eliminar" data-id="' . $dato['id'] . '">';
+                                    echo '<i class="fas fa-trash"></i>';
+                                    echo '</button>';
+                                    echo '</td>';
 
-                        }
- 
-                        ?>
+                                }
+
+                                ?>
                             </tbody>
                         </table>
                     </div>
@@ -100,7 +104,8 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
 </div>
 
 
-<div class="modal fade" id="actualizar_contraseña" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="actualizar_contraseña" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -111,22 +116,27 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
             </div>
             <div class="modal-body">
                 <form method="POST" action="actualizar_contraseña.php" id="FormularioE">
-                   
-                <input type="hidden" name="id_user" value="">
 
-                   <div class="form-floating mb-3">
-                        <div >
-                            <label >Ingrese la nueva Contraseña</label>
-                            <input class="form-control"  name="new_password"  type="text"/>
-                        </div>                                  
+                    <input type="hidden" name="id_user" value="">
+
+                    <div class="form-floating mb-3">
+                        <div>
+                            <label>Ingrese la nueva Contraseña</label>
+                            <div class="d-flex">
+                                <input class="form-control" id="new_password" name="new_password" type="password" />
+                                <button id="toggleButton" class="btn btn-light" type="button"
+                                    onclick="togglePassword('new_password',this)"><i
+                                        class="fas fa-eye text-primary"></i></button>
+                            </div>
+                        </div>
                     </div>
 
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-primary" >Actualizar</button>
+                        <button type="submit" class="btn btn-primary">Actualizar</button>
                     </div>
-                    
+
                 </form>
 
             </div>
@@ -137,7 +147,8 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
 
 <!-- Registrar Admins -->
 
-<div class="modal fade" id="registrar_administradores" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="registrar_administradores" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -151,34 +162,37 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
                 <form method="POST" action="registrarAdmins.php">
 
                     <div class="form-floating mb-3">
-                        <div >
-                            <label >Ingrese el nombre del Administrador</label>
-                            <input class="form-control" name="username" type="text"/>
-                        </div>                                  
+                        <div>
+                            <label>Ingrese el nombre del Administrador</label>
+                            <input class="form-control" name="username" type="text" />
+                        </div>
                     </div>
 
                     <div class="form-floating mb-3">
                         <div>
-                        <label >Ingrese la contraseña del administrador</label>
-                        <input class="form-control"  type="text" name="password" />
+                            <label>Ingrese la contraseña del administrador</label>
+                            <div class="d-flex">
+                                <input class="form-control" type="password" id="admin_password" name="password" />
+                                <button id="toggleButton" class="btn btn-light" type="button"
+                                    onclick="togglePassword('admin_password',this)"><i
+                                        class="fas fa-eye text-primary"></i></button>
+                            </div>
                         </div>
                     </div>
-                    
-                
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" onclick="modal_hide()" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-secondary" onclick="modal_hide()"
+                            data-dismiss="modal">Cerrar</button>
                         <button type="submit" class="btn btn-primary">Guardar cambios</button>
                     </div>
-
                 </form>
-                
             </div>
         </div>
     </div>
 </div>
 
 <!-- Eliminar Administrador -->
-<div class="modal fade" id="confirmModal_eliminar" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+<div class="modal fade" id="confirmModal_eliminar" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -188,7 +202,7 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
                 </button>
             </div>
             <div class="modal-body">
-                ¿Estás seguro de que deseas eliminar este cliente?
+                ¿Estás seguro de que deseas eliminar este usuario administrador?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
@@ -199,20 +213,19 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
 </div>
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
 
         showFlashMessages('<?php echo $message; ?>', '<?php echo $type; ?>');
 
-            $(".open-confirm-modal").click(function() {
-                var id = $(this).data("id");
-                $("#confirmDelete").attr("href", "eliminarAdmins.php?id=" + id);
-            });
+        $(".open-confirm-modal").click(function () {
+            var id = $(this).data("id");
+            $("#confirmDelete").attr("href", "eliminarAdmins.php?id=" + id);
         });
+    });
 
 
     function modal_hide() {
         $('#registrar_administradores').modal('hide');
-        console.log();
     }
 
     function password(button) {
@@ -225,7 +238,20 @@ if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
         // Llena los campos del formulario modal con los datos del cliente
         formulario.id_user.value = id_user;
     }
+
+    function togglePassword($passwordInputId, toggleButton) {
+        var $toggleButton = $(toggleButton);
+        var passwordInput = document.getElementById($passwordInputId);
+
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            $toggleButton.children().toggleClass("fas fa-eye-slash text-primary");
+        } else {
+            passwordInput.type = "password";
+            $toggleButton.children().toggleClass("fas fa-eye text-primary");
+        }
+    }
 </script>
 
 
-<?php include("plantilla/footer.php");?>
+<?php include("plantilla/footer.php"); ?>

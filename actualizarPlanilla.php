@@ -1,4 +1,5 @@
 <?php
+include "user_session.php";
 include "flash_messages.php";
 include "APIurls.php";
 
@@ -8,7 +9,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $id_servicio = $_POST["id_servicio"];
     $nueva_lectura = (int)$_POST["nueva_lectura"];
 
-    if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
+    $session_cookie = get_cookied_session();
+    if (isset($session_cookie)) {
         // Puedes proceder con la actualización de la lectura
         $url = BASE . "/planillas/update/lectura/" . $id_planilla;
 
@@ -26,9 +28,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             'Content-Type: application/json',
             'Content-Length: ' . strlen($json_data))
         );
-        curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile);
+        curl_setopt($ch, CURLOPT_COOKIE, "session=$session_cookie");
 
-        $response = curl_exec($ch);
+        $response = json_decode(curl_exec($ch), true);
 
         curl_close($ch);
 
@@ -38,12 +40,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // Procesa la respuesta según el código de respuesta HTTP
         if ($httpCode === 200) {
             create_flash_message(
-                "La Planilla se Actualizo exitosamnete",
+                $response['success'],
                 "success"
             );
         } else {
             create_flash_message(
-                "La Planilla no se puede Actualizar",
+                $response['error'],
                 "error"
             );
         }

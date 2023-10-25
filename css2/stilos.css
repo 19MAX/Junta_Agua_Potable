@@ -9,3 +9,28 @@
 #inputPassword{
     background-color: #eef2f8;
 }
+
+@media screen {
+    .print-content{
+        display: none;
+    }
+}
+
+@media print {
+    .print-content{
+        display: block;
+        padding: 2rem;
+    }
+
+    #fecha-emision-planilla{
+        margin-left: 10px;
+    }
+
+    .signer-space{
+        width: 20rem;
+        height: 10px;
+        padding-top: 5rem;
+        border-bottom: rgb(42, 42, 42) 3px solid;
+        background-color: aqua;
+    }
+}

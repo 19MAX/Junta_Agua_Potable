@@ -1,4 +1,7 @@
-<?php include "APIurls.php";?>
+<?php
+include "user_session.php";
+include "APIurls.php";
+?>
 
 
 <?php
@@ -7,7 +10,8 @@ if ($_GET) {
     $id_planilla=$_GET['id'];
 }
 
-if (file_exists($cookieFile) && filesize($cookieFile) > 0) {
+$session_cookie = get_cookied_session();
+if (isset($session_cookie)) {
 // URL a la que deseas hacer la solicitud GET
 $url = BASE. '/planillas/get/' . $id_planilla ;
 
@@ -17,7 +21,7 @@ $ch = curl_init($url);
 // Establece las opciones para la sesión CURL
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Devuelve la respuesta como una cadena en lugar de imprimirla
 curl_setopt($ch, CURLOPT_HTTPGET, true); // Utiliza el método GET
-curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile); // Lee las cookies desde el archivo en solicitudes posteriores
+curl_setopt($ch, CURLOPT_COOKIE, "session=$session_cookie");
 
 // Ejecuta la solicitud CURL y obtén la respuesta
 $response = curl_exec($ch);
@@ -71,7 +75,7 @@ if ($response && isset($response['success'])) {
  }
 
 
-$fecha_array = explode("/", $fechaEmision); 
+$fecha_array = explode("/", $fechaEmision);
 
 if (count($fecha_array) === 3) {
     $mes_numero = $fecha_array[1];
@@ -100,10 +104,13 @@ if (count($fecha_array) === 3) {
 
 
 
-<?php include("plantilla/header.php"); ?>
+<?php
+$title = "Resumen Planilla";
+include("plantilla/header.php");
+?>
 
 <div class="row pl-5 pt-4">
-    <button type="button" class=" col-1 btn btn-danger" onclick="imprimirPagina()">PDF</button>
+    <button type="button" class=" col-1 btn btn-danger" onclick="imprimirPlanilla()">PDF</button>
 </div>
 
 <div class="col-12" id="planilla_imprimir" >
@@ -115,7 +122,7 @@ if (count($fecha_array) === 3) {
             <h6 class="m-0 font-weight-bold text-info">Agua y Tansicion Ecologica</h6>
             </div>
             <div class="text-center col-6">
-            <h6 class="m-0 font-weight-bold text-info">Junta Administrativa de Agua Potable"X"</h6>
+            <h6 class="m-0 font-weight-bold text-info">Junta Administrativa de Agua Potable "La Chongona"</h6>
             <h6 class="m-0 font-weight-bold text-info">FACTURA DE COBRO POR SERVICIOS</h6>
             </div>
         </div>
@@ -137,7 +144,6 @@ if (count($fecha_array) === 3) {
                 <h4 class="small font-weight-bold m-3">Direccion :  <?php echo $direccion; ?></h4>
                 <div class="m-1"></div>
             </div>
-            
         </div>
 
         <div class="row pt-3">
@@ -154,7 +160,6 @@ if (count($fecha_array) === 3) {
 
     </div>
         <div class="card shadow m-3 border-info">
-    
             <div class="card-header row m-0 pb-1 border-bottom-info">
         <div class="row col-10">
             <div class="text-left col-6">
@@ -164,7 +169,7 @@ if (count($fecha_array) === 3) {
                 <h6 class="mr-0 font-weight-bold text-info pr-0">VALORES</h6>
             </div>
         </div>
-            </div>
+    </div>
 
     <div class="card-body pt-1">
         <div class="row">
@@ -188,12 +193,31 @@ if (count($fecha_array) === 3) {
     </div>
 </div>
 
+<div class="print-content">
+    <div class="d-flex">
+        <p><b>Impreso el: </b></p>
+        <p id="fecha-emision-planilla"></p>
+    </div>
+    <div class="d-flex justify-content-center align-items-center">
+        <div>
+            <div class="signer-space"></div>
+            <div class="text-center">
+                <p><b>Firma. Presidente de Junta de Agua</b></p>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
-    function imprimirPagina() {
+    function imprimirPlanilla() {
+        var d = new Date();
+        var strDate = (d.getFullYear() + "/" + (d.getMonth()+1) + "/" + d.getDate() +
+            " a las " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2));
+        $('#fecha-emision-planilla').text(strDate);
         printJS({
             printable:"planilla_imprimir",
             type:"html",
-            css:["css/sb-admin-2.css"],
+            css:["css/sb-admin-2.css","css2/stilos.css"],
         })
     }
 </script>

@@ -93,6 +93,7 @@ $('#tabla_servicios').DataTable({
 
 
 $('#tabla_planilla').DataTable({
+    order: [[0, 'desc']],
     language:{
         zeroRecords:'No hay coincidencias',
         info:'Mostrando _END_ resultados de _MAX_',
@@ -125,7 +126,6 @@ $('#tabla_planilla').DataTable({
             text: '<i class="fa-lg text-success fas fa-plus-circle"></i>',
             action: function () {
                 $('#registrarP').modal('show');
-            
             }
         },
     ],
@@ -163,9 +163,7 @@ $('#tabla_generarP').DataTable({
             exportOptions: {
                 columns: ':not(.exclude)'
             },
-            
         },
-        
     ],
     lengthMenu: [ 10, 25, 50, 100 ]
 } );
@@ -200,7 +198,6 @@ $('#tabla_pendientes').DataTable({
                 columns: ':not(.exclude)'
             }
         },
-        
     ],
     lengthMenu: [ 10, 25, 50, 100 ]
 } );
@@ -225,20 +222,27 @@ $('#tabla_logs').DataTable({
     dom: 'Bfrtip',
     buttons: [
         'pageLength',
-        
+        { extend: 'excelHtml5', text:'<i class="fa-lg text-success fa-solid fa-file-excel"></i>',
+            exportOptions: {
+                columns: ':not(.exclude)'
+            }
+        },
+        { extend: 'print', text: '<i class="fa-lg text-danger fa-solid fa-print"></i>',
+            exportOptions: {
+                columns: ':not(.exclude)'
+            }
+        },
         {
             text: '<i class="fa-lg text-danger fas fa-trash"></i>',
             action: function () {
                 $('#eliminar_logs').modal('show');
-            
             }
-        },
-        
+        }
     ],
     lengthMenu: [ 10, 25, 50, 100 ]
     } );
 
-    
+
     $('#tabla_administradores').DataTable({
         language:{
             zeroRecords:'No hay coincidencias',

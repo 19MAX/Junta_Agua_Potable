@@ -46,7 +46,7 @@ if (isset($session_cookie)) {
 ?>
 
 <?php
-$title = "Financiamiento de conexiones";
+$title = "Conexiones por Financiamiento";
 include("plantilla/header.php")
 ?>
 
@@ -96,7 +96,6 @@ include("plantilla/header.php")
                                     $cliente = $registro["cliente"];
                                     $fecha_emision = $registro["fecha_emision"];
                                     $hora_emision = $registro["hora_emision"];
-                                    
                                     $entrada = $registro["entrada"];
                                     $cuota1 = $registro["cuota1"];
                                     $cuota2 = $registro["cuota2"];
@@ -107,7 +106,6 @@ include("plantilla/header.php")
                                     $total_pagar = $registro["total_pagar"];
                                     $total_pagado = $registro["total_pagado"];
                                     $restante_pagar = $registro["restante_pagar"];
-                                
                                     // Accede a los datos dentro de "servicio"
                                     $id_servicio = $servicio["id"];
                                     $n_conexion = $servicio["n_conexion"];
@@ -115,7 +113,6 @@ include("plantilla/header.php")
                                     $direccion = $servicio["direccion"];
                                     $estado = $servicio["estado"];
                                     $lectura_anterior = $servicio["lectura_anterior"];
-                                
                                     // Accede a los datos dentro de "cliente"
                                     $id_cliente = $cliente["id"];
                                     $cedula = $cliente["cedula"];
@@ -131,32 +128,27 @@ include("plantilla/header.php")
                                     echo'<td>' .$apellidos .'</td>';
                                     echo'<td>' .$fecha_emision .'</td>';
                                     echo'<td>' .$hora_emision .'</td>';
-                                    echo'<td>' .$entrada .'</td>';
+                                    echo'<td>$ ' .$entrada .'</td>';
 
                                     $formulario_id = 'formulario_' . $id; // Puedes usar el ID del registro como parte del identificador
 
                                     echo '<form id="' . $formulario_id . '" action="actualizar_cuotas.php" method="post" >';
-                                    echo '<td><input class="w-100" type="number" name="cuota1" value="' . $cuota1 . '"></td>';
-                                    echo '<td><input class="w-100" type="number" name="cuota2" value="' . $cuota2 . '"></td>';
-                                    echo '<td><input class="w-100" type="number" name="cuota3" value="' . $cuota3 . '"></td>';
-                                    echo '<td><input class="w-100" type="number" name="cuota4" value="' . $cuota4 . '"></td>';
-                                    echo '<td><input class="w-100" type="number" name="cuota5" value="' . $cuota5 . '"></td>';
-                                    echo '<td><input class="w-100" type="number" name="cuota6" value="' . $cuota6 . '"></td>';
+                                    echo '<td><input class="w-100" type="number" id="cuota1" name="cuota1" value="' . $cuota1 . '"></td>';
+                                    echo '<td><input class="w-100" type="number" id="cuota2" name="cuota2" value="' . $cuota2 . '"></td>';
+                                    echo '<td><input class="w-100" type="number" id="cuota3" name="cuota3" value="' . $cuota3 . '"></td>';
+                                    echo '<td><input class="w-100" type="number" id="cuota4" name="cuota4" value="' . $cuota4 . '"></td>';
+                                    echo '<td><input class="w-100" type="number" id="cuota5" name="cuota5" value="' . $cuota5 . '"></td>';
+                                    echo '<td><input class="w-100" type="number" id="cuota6" name="cuota6" value="' . $cuota6 . '"></td>';
                                     echo '<input type="hidden" name="id_pago" id="id_pago" value="'. $id .'"><br>';
                                     echo'</form>';
-                                    echo'<td>' .$total_pagar .'</td>';
-                                    echo'<td>' .$total_pagado .'</td>';
-                                    echo'<td>' .$restante_pagar .'</td>';
-
+                                    echo'<td>$ ' .$total_pagar .'</td>';
+                                    echo'<td>$ ' .$total_pagado .'</td>';
+                                    echo'<td>$ ' .$restante_pagar .'</td>';
                                     echo '<td>';
                                     echo '<button title="Actualizar Todas las cuotas" type="button" class="btn btn-warning m-1" onclick="enviarFormulario(\'' . $formulario_id . '\')">';
                                     echo '<i class="fas fa-sync"></i>';
                                     echo '</button>';
                                     echo '</td>';
-
-
-                                    
-
                                     echo '</tr>';
                                 }
                             ?>
@@ -171,13 +163,26 @@ include("plantilla/header.php")
 
 <script>
     function enviarFormulario(formulario_id) {
-    // Encuentra el formulario por su ID y envíalo
-    document.querySelector('#' + formulario_id).submit();
-}
+        // Encuentra el formulario por su ID y envíalo
+        document.querySelector('#' + formulario_id).submit();
+    }
 
     $(document).ready(function() {
         showFlashMessages('<?php echo $message; ?>', '<?php echo $type; ?>');
     });
+
+    function set_cuotas_in_table(){
+        // Fields
+        cuotas_fields = [
+            'cuota1'
+        ];
+        // Values
+        cuotas_values = [
+            $('input[name="cuota1"]'), $('input[name="cuota2"]'), $('input[name="cuota3"]'),
+            $('input[name="cuota4"]'), $('input[name="cuota5"]'), $('input[name="cuota6"]')
+        ]
+        return cuotas_values;
+    }
 
 </script>
 

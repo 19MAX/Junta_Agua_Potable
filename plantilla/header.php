@@ -29,7 +29,7 @@
         <script src="js/datatables.js" ></script>
 
         <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js" ></script>
-        <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">        
+        <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
@@ -42,6 +42,8 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
+        <!-- Chart.js -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     </head>
     <body class="sb-nav-fixed">
         <nav class=" sb-topnav navbar navbar-expand navbar-light bg-primary shadow">
@@ -51,7 +53,6 @@
             </a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-            <p class="text-white font-weight-bold h4 ms-3">Junta Administradora de Agua Potable "La Chongona"</p>
             <!-- Navbar-->
             <ul class="navbar-nav ms-auto  me-0 me-md-3 my-2 my-md-0">
                 <li class="nav-item dropdown">
@@ -78,7 +79,7 @@
                                 Administradores
                             </a>
                             <hr class="bg-white ml-3 mr-3 mb-1 mt-1">
-                            <a class="nav-link" href="principal.php" >
+                            <a class="nav-link" href="clientes.php" >
                                 <div class="sb-nav-link-icon text-gray-300"><i class="fas fa-user fa-fw"></i></div>
                                 Clientes
                             </a>

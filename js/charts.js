@@ -109,9 +109,13 @@ const externalTooltipHandler = (context) => {
 // CHARTS INITILIZE
 const cobros_planillas_semana_ctx = $('#cob-pla-semana-ctx');
 const cobros_planillas_mes_ctx = $('#cob-pla-mes-ctx');
+const cobros_conexion_contado_ctx = $('#cob-con-cont-ctx');
+const cobros_conexion_financiamiento_ctx = $('#cob-con-fin-ctx');
+const cobros_reconexion_ctx = $("#cob-reconexion-ctx");
 
 const DIAS = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'];
 const MESES = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
 
 new Chart(cobros_planillas_semana_ctx, {
     type: 'bar',
@@ -119,8 +123,10 @@ new Chart(cobros_planillas_semana_ctx, {
       labels: DIAS,
       datasets: [{
           label: 'Cobros',
-          data: cob_pla_sem,
+          data: (typeof cob_pla_sem !== "undefined") ? cob_pla_sem : [0],
           borderWidth: 3,
+          backgroundColor: '#80DEEA',
+          borderColor: '#26C6DA'
       }]
     },
     options: {
@@ -135,29 +141,23 @@ new Chart(cobros_planillas_semana_ctx, {
               beginAtZero: true
           }
       },
-      plugins: {
-          title:{
-              text: 'Cobros realizados en la semana'
-          },
-          tooltip: {
-              enabled: false,
-              position: 'nearest',
-              external: externalTooltipHandler
-          }
+      interaction: {
+        intersect: false,
       }
     }
 });
 
+
 new Chart(cobros_planillas_mes_ctx, {
   type: 'bar',
   data: {
-    labels: meses,
+    labels: MESES,
     datasets: [{
         label: 'Cobros',
-        data: cob_pla_mes,
+        data: (typeof cob_pla_mes !== "undefined") ? cob_pla_mes : null,
         borderWidth: 3,
-        backgroundColor: '#AED581',
-        borderColor: '#8BC34A'
+        backgroundColor: '#B2FF59',
+        borderColor: '#64DD17'
     }]
   },
   options: {
@@ -172,15 +172,101 @@ new Chart(cobros_planillas_mes_ctx, {
             beginAtZero: true
         }
     },
-    plugins: {
-        title:{
-            text: 'Cobros realizados al mes'
-        },
-        tooltip: {
-            enabled: false,
-            position: 'nearest',
-            external: externalTooltipHandler
+    interaction: {
+      intersect: false,
+    }
+  }
+});
+
+
+new Chart(cobros_conexion_contado_ctx, {
+  type: 'bar',
+  data: {
+    labels: MESES,
+    datasets: [{
+        label: 'Recaudado',
+        data: (typeof cob_con_cont !== "undefined") ? cob_con_cont : null,
+        borderWidth: 3,
+        backgroundColor: '#F06292',
+        borderColor: '#E91E63'
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+        y: {
+            title: {
+                display: true,
+                text: 'Total $'
+            },
+            beginAtZero: true
         }
+    },
+    interaction: {
+      intersect: false,
+    }
+  }
+});
+
+
+new Chart(cobros_conexion_financiamiento_ctx, {
+  type: 'bar',
+  data: {
+    labels: MESES,
+    datasets: [{
+        label: 'Recaudado',
+        data: (typeof cob_con_fin !== "undefined") ? cob_con_fin : null,
+        borderWidth: 3,
+        backgroundColor: '#F06292',
+        borderColor: '#E91E63'
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+        y: {
+            title: {
+                display: true,
+                text: 'Total $'
+            },
+            beginAtZero: true
+        }
+    },
+    interaction: {
+      intersect: false,
+    }
+  }
+});
+
+
+new Chart(cobros_reconexion_ctx, {
+  type: 'bar',
+  data: {
+    labels: MESES,
+    datasets: [{
+        label: 'Recaudado',
+        data: (typeof cob_reconexion!== "undefined") ? cob_reconexion : null,
+        borderWidth: 3,
+        backgroundColor: '#F06292',
+        borderColor: '#E91E63'
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+        y: {
+            title: {
+                display: true,
+                text: 'Total $'
+            },
+            beginAtZero: true
+        }
+    },
+    interaction: {
+      intersect: false,
     }
   }
 });

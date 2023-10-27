@@ -65,7 +65,7 @@ include("plantilla/header.php")
                     </div>
                     <!-- Card Body -->
                     <div class="table-responsive shadow-sm">
-                        <table id="tabla_conexion" class="crud-table">
+                        <table id="tabla_conexion_financiamiento" class="crud-table">
                             <thead>
                                 <tr>
                                     <th>Id Servicio</th>
@@ -90,7 +90,7 @@ include("plantilla/header.php")
                             </thead>
                             <tbody>
                             <?php
-                                foreach ($response["success"] as $registro) {
+                                foreach ($response["success"] as $key => $registro) {
                                     $id = $registro["id"];
                                     $servicio = $registro["servicio"];
                                     $cliente = $registro["cliente"];
@@ -133,12 +133,12 @@ include("plantilla/header.php")
                                     $formulario_id = 'formulario_' . $id; // Puedes usar el ID del registro como parte del identificador
 
                                     echo '<form id="' . $formulario_id . '" action="actualizar_cuotas.php" method="post" >';
-                                    echo '<td><input class="w-100" type="number" id="cuota1" name="cuota1" value="' . $cuota1 . '"></td>';
-                                    echo '<td><input class="w-100" type="number" id="cuota2" name="cuota2" value="' . $cuota2 . '"></td>';
-                                    echo '<td><input class="w-100" type="number" id="cuota3" name="cuota3" value="' . $cuota3 . '"></td>';
-                                    echo '<td><input class="w-100" type="number" id="cuota4" name="cuota4" value="' . $cuota4 . '"></td>';
-                                    echo '<td><input class="w-100" type="number" id="cuota5" name="cuota5" value="' . $cuota5 . '"></td>';
-                                    echo '<td><input class="w-100" type="number" id="cuota6" name="cuota6" value="' . $cuota6 . '"></td>';
+                                    echo '<td><input class="w-100" type="number" id="cuota1" data-pos="'.$key.',0" name="cuota1" value="' . $cuota1 . '"></td>';
+                                    echo '<td><input class="w-100" type="number" id="cuota2" data-pos="'.$key.',1" name="cuota2" value="' . $cuota2 . '"></td>';
+                                    echo '<td><input class="w-100" type="number" id="cuota3" data-pos="'.$key.',3" name="cuota3" value="' . $cuota3 . '"></td>';
+                                    echo '<td><input class="w-100" type="number" id="cuota4" data-pos="'.$key.',2" name="cuota4" value="' . $cuota4 . '"></td>';
+                                    echo '<td><input class="w-100" type="number" id="cuota5" data-pos="'.$key.',4" name="cuota5" value="' . $cuota5 . '"></td>';
+                                    echo '<td><input class="w-100" type="number" id="cuota6" data-pos="'.$key.',5" name="cuota6" value="' . $cuota6 . '"></td>';
                                     echo '<input type="hidden" name="id_pago" id="id_pago" value="'. $id .'"><br>';
                                     echo'</form>';
                                     echo'<td>$ ' .$total_pagar .'</td>';

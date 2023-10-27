@@ -86,8 +86,7 @@ $(document).ready(function () {
             {
                 text: '<i class=" text-dark fa-lg fas fa-arrow-left"></i>',
                 action: function () {
-                    window.location.href = "principal.php";
-
+                    window.location.href = "clientes.php";
                 }
             },
         ],

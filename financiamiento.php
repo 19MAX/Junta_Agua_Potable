@@ -120,7 +120,11 @@ include("plantilla/header.php")
                                     $apellidos = $cliente["apellidos"];
                                     $telefono = $cliente["telefono"];
 
-                                    echo '<tr>';
+                                    if ($restante_pagar > 0){
+                                        echo '<tr class="bg-pago-alert">';
+                                    } else {
+                                        echo '<tr>';
+                                    }
                                     echo'<td>' .$id_servicio .'</td>';
                                     echo'<td>' .$n_conexion .'</td>';
                                     echo'<td>' .$n_medidor .'</td>';

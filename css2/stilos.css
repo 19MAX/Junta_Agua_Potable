@@ -10,6 +10,14 @@
     background-color: #eef2f8;
 }
 
+.bg-pago-alert{
+    background-color: #EF9A9A !important;
+    color: #212121;
+}
+.bg-pago-alert.odd{
+    background-color: #E57373 !important;
+}
+
 @media screen {
     .print-content{
         display: none;

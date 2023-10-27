@@ -1,9 +1,4 @@
 <?php
-// require "APIurls.php";
-// require "user_session.php";
-
-// Verificar si el archivo de cookies existe y no está vacío
-$session_cookie = get_cookied_session();
 if (isset($session_cookie)) {
     // URL a la que deseas hacer la solicitud GET
     $url = BASE . '/general/get/stats';

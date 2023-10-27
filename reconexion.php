@@ -4,6 +4,8 @@ include "APIurls.php";
 include "flash_messages.php";
 
 $session_cookie = get_cookied_session();
+include "stats_cobros_conexion.php";
+
 if (isset($session_cookie)) {
     // URL a la que deseas hacer la solicitud GET
     $url = BASE . '/pagos/reconexion/get/all';
@@ -44,6 +46,17 @@ include("plantilla/header.php");
 
 <div class="container-fluid px-4">
     <h1 class="mt-4">Pagos por Reconexion</h1>
+    <!-- Chart -->
+    <div class="row mt-5 mb-5">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+            <ol class="breadcrumb mb-4 shadow-sm">
+                <li class="breadcrumb-item active">Resumen cobros por reconexion</li>
+            </ol>
+            <div style="width: 100%; min-height: 25vh;"><canvas id="cob-reconexion-ctx"></canvas></div>
+        </div>
+    </div>
+
+    <!-- Table -->
     <div>
         <!-- Content Row -->
         <div class="row">
@@ -115,5 +128,9 @@ include("plantilla/header.php");
     </div>
 </div>
 
+<script>
+    var cob_reconexion =JSON.parse("<?php echo json_encode($stats_reconexion); ?>");
+</script>
+<script src="js/charts.js"></script>
 
 <?php include "plantilla/footer.php";?>

@@ -12,6 +12,8 @@ if (isset($flash_message)) {
 }
 
 $session_cookie = get_cookied_session();
+include "stats_cobros_conexion.php";
+
 if (isset($session_cookie)) {
     // URL a la que deseas hacer la solicitud GET
     $url = BASE . '/pagos/financiamiento/get/all';
@@ -53,6 +55,18 @@ include("plantilla/header.php")
 <div class="container-fluid px-4">
     <h1 class="mt-4">Conexion con Financiamiento</h1>
     <script src="js/flash_messages.js"></script>
+
+    <!-- Chart -->
+    <div class="row mt-5 mb-5">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+            <ol class="breadcrumb mb-4 shadow-sm">
+                <li class="breadcrumb-item active">Resumen cobros conexion por financiamiento</li>
+            </ol>
+            <div style="width: 100%; min-height: 25vh;"><canvas id="cob-con-fin-ctx"></canvas></div>
+        </div>
+    </div>
+
+    <!-- Table -->
     <div>
         <!-- Content Row -->
         <div class="row">
@@ -166,6 +180,8 @@ include("plantilla/header.php")
 </div>
 
 <script>
+    var cob_con_fin = JSON.parse("<?php echo json_encode($stats_conexion_financiamiento); ?>");
+
     function enviarFormulario(formulario_id) {
         // Encuentra el formulario por su ID y envíalo
         document.querySelector('#' + formulario_id).submit();
@@ -187,9 +203,7 @@ include("plantilla/header.php")
         ]
         return cuotas_values;
     }
-
 </script>
-
-
+<script src="js/charts.js"></script>
 
 <?php include("plantilla/footer.php");?>

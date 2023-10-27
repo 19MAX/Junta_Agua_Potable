@@ -3,6 +3,8 @@ include "user_session.php";
 include "APIurls.php";
 
 $session_cookie= get_cookied_session();
+
+include "stats_cobros_conexion.php";
 if (isset($session_cookie)) {
     // URL a la que deseas hacer la solicitud GET
     $url = BASE . '/pagos/contado/get/all';
@@ -43,7 +45,17 @@ include("plantilla/header.php")
 
 <div class="container-fluid px-4">
     <h1 class="mt-4">Conexion al Contado</h1>
+    <!-- Chart -->
+    <div class="row mt-5 mb-5">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+            <ol class="breadcrumb mb-4 shadow-sm">
+                <li class="breadcrumb-item active">Resumen cobros por conexion al contado</li>
+            </ol>
+            <div style="width: 100%; min-height: 25vh;"><canvas id="cob-con-cont-ctx"></canvas></div>
+        </div>
+    </div>
 
+    <!-- Table -->
     <div>
         <!-- Content Row -->
         <div class="row">
@@ -119,5 +131,10 @@ include("plantilla/header.php")
         </div>
     </div>
 </div>
+
+<script>
+    var cob_con_cont = JSON.parse("<?php echo $stats_conexion_contado;?>");
+</script>
+<script src="js/charts.js"></script>
 
 <?php include("plantilla/footer.php");?>

@@ -114,6 +114,7 @@ include("plantilla/header.php");
                                 <th>Conexion con Financiamiento</th>
                                 <th class="exclude">Estado de Servicio</th>
                                 <th class="exclude">Editar Servicio</th>
+                                <th class="exclude">Emitir Notificacion</th>
                                 <th class="exclude">Eliminar Servicio</th>
                                 <th class="exclude">Cambiar al cliente que le pertenece el servico</th>
                                 <th class="exclude">Planillas</th>
@@ -138,14 +139,15 @@ include("plantilla/header.php");
                                 echo '</a>';
                                 echo '</td>';
 
-
-
-
-
-
                                 echo '<td>';
                                 echo '<button title="Editar Servicio" type="button" class="btn btn-primary m-1" data-toggle="modal" data-target="#editar" data-id_servicio="' . $dato['id'] . '"  data-id_cliente="' . $id_de_cliente . '"  data-n_conexion="' . $dato['n_conexion'] . '" data-n_medidor="' . $dato['n_medidor'] . '" data-direccion="' . $dato['direccion'] . '" onclick="datos(this)">';
                                 echo '<i class="fas fa-edit"></i>';
+                                echo '</button>';
+                                echo '</td>';
+
+                                echo '<td>';
+                                echo '<button title="Emitir Notificación" type="button" class="btn btn-warning m-1" data-toggle="modal" data-target="#notificacion" data-id_servicio="' . $dato['id'] . '" data-id_cliente="' . $id_de_cliente . '" data-nombre_cliente="' . $nombre . '" onclick="nueva_notificacion(this)">';
+                                echo '<i class="fas fa-bell"></i>';
                                 echo '</button>';
                                 echo '</td>';
 
@@ -156,18 +158,12 @@ include("plantilla/header.php");
                                 echo '</button>';
                                 echo '</td>';
 
-
-
-
                                 // <!-- Botón para abrir el modal de Cambiar a que cliente le pertenece el servicio -->
                                 echo '<td>';
                                 echo '<button title="Cambiar el Servicio a un cliente nuevo" type="button" class="btn btn-warning m-1" data-toggle="modal" data-target="#cambiarClienteModal" onclick="cambiarUser(this)" data-id_servicio="' . $dato['id'] . '">';
                                 echo '<i class="fas fa-exchange-alt"></i>';
                                 echo '</button>';
                                 echo '</td>';
-
-
-
 
                                 echo '<td>';
                                 echo '<a href="planillas.php?id=' . $dato['id'] . '">';
@@ -364,6 +360,34 @@ include("plantilla/header.php");
     </div>
 </div>
 
+<!-- Formulario de nueva notificacion -->
+<form action="nueva_notificacion.php" method="post" class="d-none" id="nueva_notificacion_form">
+    <input type="text" id="id_servicio_notificacion" name="id_servicio" value="">
+    <input type="text" id="id_cliente_notificacion" name="id_cliente" value="">
+    <input type="text" id="nombre_usuario_notificacion" name="nombre" value="">
+</form>
+
+<!-- Nueva notificacion -->
+<div class="modal fade" id="notificacion" tabindex="-1" role="dialog" aria-labelledby="nuevaNotificacion"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="nuevaNotificacion">Emitir Notificación</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Va a generar una notificacion para este servicio, ¿está seguro?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" onclick="send_nueva_notificacion()">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <!-- Modal de Confirmación -->
@@ -397,11 +421,6 @@ include("plantilla/header.php");
     function disableContado() {
         document.getElementById("contado_conexion").disabled = document.getElementById("financiamiento_conexion").checked;
     }
-
-    function modal_hide() {
-        // Agrega aquí la lógica para ocultar el modal si es necesario.
-    }
-
 
 
     $(document).ready(function () {
@@ -452,7 +471,6 @@ include("plantilla/header.php");
 
     function modal_hide() {
         $('#registrar_servicio').modal('hide');
-
     }
 
     function datos(button) {
@@ -472,6 +490,19 @@ include("plantilla/header.php");
         formulario.n_conexion.value = n_conexion;
         formulario.n_medidor.value = n_medidor;
         formulario.direccion.value = direccion;
+    }
+
+    function nueva_notificacion(btn){
+        var id_servicio = btn.getAttribute('data-id_servicio');
+        var id_cliente =btn.getAttribute('data-id_cliente');
+        var nombre_cliente =btn.getAttribute('data-nombre_cliente');
+        $('#id_servicio_notificacion').val(id_servicio);
+        $('#id_cliente_notificacion').val(id_cliente);
+        $('#nombre_usuario_notificacion').val(nombre_cliente);
+    }
+
+    function send_nueva_notificacion(){
+        $('#nueva_notificacion_form').submit();
     }
 
 </script>

@@ -84,14 +84,18 @@
                                 Clientes
                             </a>
                             <hr class="bg-white ml-3 mr-3 mb-2 mt-2">
-
                             <a class="nav-link " href="pendiente.php" >
-                                <div class="sb-nav-link-icon text-gray-300"><i class="fas fa-checklist text-gray-300"></i></div>
+                                <div class="sb-nav-link-icon text-gray-300"><i class="fas fa-exclamation-circle text-gray-300"></i></div>
                                 Planillas Pendientes
+                            </a>
+                            <hr class="bg-white ml-3 mr-3 mb-2 mt-2">
+                            <a class="nav-link " href="notificaciones.php" >
+                                <div class="sb-nav-link-icon text-gray-300"><i class="fas fa-bell text-gray-300"></i></div>
+                                Notificaciones
                             </a>
                             <hr class="bg-white  ml-3 mr-3 mb-1 mt-1">
                             <a class="nav-link " href="servicios2.php" >
-                                <div class="sb-nav-link-icon text-gray-300"><i class="fas fa-clipboard-list  text-gray-300"></i></div>
+                                <div class="sb-nav-link-icon text-gray-300"><i class="fas fa-clipboard-list text-gray-300"></i></div>
                                 Servicios Y Generar Planillas
                             </a>
                             <hr class="bg-white  ml-3 mr-3 mb-2 mt-2">

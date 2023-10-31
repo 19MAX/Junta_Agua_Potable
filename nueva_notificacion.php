@@ -1,0 +1,61 @@
+<?php
+include "user_session.php";
+include "flash_messages.php";
+include "APIurls.php";
+
+ini_set("display_errors","1");
+error_reporting(E_ALL);
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $session_cookie = get_cookied_session();
+    if (isset($session_cookie)) {
+        $id_servicio = $_POST['id_servicio'];
+        $id_cliente = $_POST['id_cliente'];
+        $nombre = $_POST['nombre'];
+
+        // URL a la que deseas hacer la solicitud PUT
+        $url = BASE . '/notificaciones/new/' . $id_servicio;
+
+        // Inicializar la sesión cURL
+        $ch = curl_init($url);
+
+        // Configurar las opciones de la solicitud cURL
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Devolver el resultado en lugar de imprimirlo en pantalla
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST'); // Establecer el método de solicitud como PUT
+        curl_setopt($ch, CURLOPT_COOKIE, "session=$session_cookie");
+
+        // Establecer encabezados si es necesario (por ejemplo, para enviar JSON)
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+        ));
+
+        // Realizar la solicitud cURL y obtener la respuesta
+        $response = json_decode(curl_exec($ch), true);
+
+        // Verificar el código de respuesta HTTP
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+        // Cerrar la sesión cURL
+        curl_close($ch);
+
+        if ($httpCode === 201) {
+            create_flash_message(
+                $response['success'],
+                "success"
+            );
+        } else {
+            create_flash_message(
+                $response['error'],
+                "error"
+            );
+        }
+        header("Location: $base_request/servicios.php?id=" . $id_cliente . '&nombre=' . $nombre);
+        exit();
+    } else {
+        header("Location: $base_request/index.php?alert=error");
+        exit();
+    }
+} else {
+    header("Location: $base_request/servicios.php?id=" . $id_cliente . '&nombre=' . $nombre);
+    exit();
+}

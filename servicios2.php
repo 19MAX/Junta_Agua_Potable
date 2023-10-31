@@ -27,7 +27,7 @@ if (isset($session_cookie)) {
 ?>
 
 <?php
-$title = "Servicios";
+$title = "Servicios y Planillas";
 include("plantilla/header.php")
 ?>
 
@@ -69,7 +69,6 @@ include("plantilla/header.php")
                             <tbody>
 
                             <?php
-                        
                         foreach ($response['success'] as $registro) {
                             // Accede a los valores dentro de cada registro
                             $id = $registro['id'];
@@ -79,7 +78,6 @@ include("plantilla/header.php")
                             $estado = $registro['estado'];
                             $lectura_anterior = $registro['lectura_anterior'];
                             $planilla_actual_emitida = $registro['planilla_actual_emitida'];
-                        
                             // Información del cliente dentro de cada registro
                             $cliente = $registro['cliente'];
                             $id_de_cliente = $cliente['id'];
@@ -88,15 +86,13 @@ include("plantilla/header.php")
                             $apellidos = $cliente['apellidos'];
                             $telefono = $cliente['telefono'];
                             $financiamiento_conexion = $registro['financiamiento_conexion'];
-                        
                             echo '<tr>';
                             echo '<td>' . $id_de_cliente . '</td>';
                             echo '<td>' . $cedula . '</td>';
-                            echo '<td>' . $nombres . '</td>';  
+                            echo '<td>' . $nombres . '</td>';
                             echo '<td>' . $apellidos . '</td>';
                             echo '<td>' . $n_conexion . '</td>';
                             echo '<td>' . $n_medidor . '</td>';
-                            
                             echo '<td>';
                             if ($estado) {
                                 echo '<span class="badge bg-success"><i class="fas fa-check fa-lg"></i></span>';
@@ -105,8 +101,6 @@ include("plantilla/header.php")
                             }
                             echo '</td>';
 
-
-                            
                             if ($planilla_actual_emitida) {
                                 echo '    <td>' . $lectura_anterior . '</td>';
                             } else {
@@ -118,19 +112,12 @@ include("plantilla/header.php")
                                 echo '        </form>';
                                 echo '    </td>';
                             }
-                            
-                            
 
                             echo '<td>' . ($planilla_actual_emitida ? "Sí" : "No") . '</td>';
-                            
                             echo '<td>' . ($financiamiento_conexion ? "Sí" : "No") . '</td>';
                             echo '</tr>';
                         }
-                        
-
-
                         ?>
-                        
                             </tbody>
                         </table>
                         <style>
@@ -138,7 +125,7 @@ include("plantilla/header.php")
                             .exclude-element{
                                 display:none;
                             }
-                           } 
+                           }
                         </style>
                     </div>
                 </div>

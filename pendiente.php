@@ -48,8 +48,6 @@ include("plantilla/header.php");
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between shadow-sm">
                         <h6 class="m-0 font-weight-bold text-primary">Planillas Pendientes</h6>
                         <div class="dropdown no-arrow">
-                           
-                            
                         </div>
                     </div>
                     <!-- Card Body -->
@@ -75,14 +73,11 @@ include("plantilla/header.php");
                             <tbody>
 
                             <?php
-                        
 
                             foreach ($response['success'] as $primerElemento) {
-                                
 
                                 // Accede a los valores dentro del primer elemento
                                 $id = $primerElemento['id'];
-                                
                                 // Información del servicio dentro del primer elemento
                                 $servicio = $primerElemento['servicio'];
 
@@ -138,14 +133,9 @@ include("plantilla/header.php");
                                 echo '<td>' . $lectura_actual . '</td>';
                                 echo '<td>' . $consumo_total . '</td>';
                                 echo '<td>' . $valor_consumo_total . '</td>';
-                               
-
                                 echo '</tr>';
                             }
-
-
                         ?>
-                        
                             </tbody>
                         </table>
                     </div>
@@ -154,9 +144,5 @@ include("plantilla/header.php");
         </div>
     </div>
 </div>
-
-
-
-
 
 <?php include("plantilla/footer.php");?>

@@ -46,7 +46,6 @@ if ($_POST) {
     $ch = curl_init();
 
     curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_HEADER, 0);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
     // Configuración para seguir redirecciones
@@ -55,27 +54,36 @@ if ($_POST) {
     // Agregar encabezados si es necesario (por ejemplo, encabezado JSON)
     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
 
-    curl_setopt($ch, CURLOPT_COOKIEJAR, $cookieFile);
-    curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile);
+    /* enable the cookie engine */
+    curl_setopt($ch, CURLOPT_COOKIEFILE, "");
 
     $response = curl_exec($ch);
-    // Cerrar la sesión cURL
-    curl_close($ch);
 
     // Obtener el código de respuesta HTTP
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     // Verificar si la solicitud fue exitosa (por ejemplo, si el código de respuesta es 200)
     if ($httpCode === 200) {
-        $cookieInfo = curl_getinfo($ch, CURLINFO_COOKIELIST);
-        // Configurar partes de la cookie
-        $cookieParts = explode("\t", $cookieInfo[0]);
-        $cookieName = $cookieParts[5];
-        $cookieValue = $cookieParts[6];
-        // Configurar la cookie
-        $cookie = $cookieValue;
-        save_session($cookie);
 
+        $cookies = curl_getinfo($ch, CURLINFO_COOKIELIST);
+
+        // Configurar partes de la cookie
+        $cookieParts = explode("\t", $cookies[0]);
+        $cookieName = $cookieParts[5];
+        if ($cookieName === 'session'){
+            $cookie = $cookieParts[6];
+            // Guardar la cookie en la sesión
+            save_session($cookie);
+        }
+    }
+    // Cerrar la sesión cURL
+    curl_close($ch);
+
+    // Comprobar si el valor de cookie no es null para redireccionar la pagina
+    if (isset($cookie)){
         header("Location: $base_request/principal.php");
+        exit();
+    } else {
+        header("Location: $base_request");
         exit();
     }
 }

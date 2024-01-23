@@ -1,4 +1,5 @@
 <?php
+
 if (isset($session_cookie)) {
     // URL a la que deseas hacer la solicitud GET
     $url = BASE . '/general/get/stats/cobros/conexion';
@@ -21,15 +22,11 @@ if (isset($session_cookie)) {
     $stats_cobros = null;
 
     if ($http_code !== 200) {
-        create_flash_message($response['error'],'error');
-        exit();
+        create_flash_message("No fue posible obtener los graficos",'error');
     }
     $stats_conexion_contado = $response['success']['resumen_conexion_contado'];
     $stats_conexion_financiamiento = $response['success']['resumen_conexion_financiamiento'];
     $stats_reconexion = $response['success']['resumen_reconexion'];
 } else {
     header("Location: $base_request/index.php?alert=error");
-    exit();
 }
-
-?>

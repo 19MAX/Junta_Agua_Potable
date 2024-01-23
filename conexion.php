@@ -1,6 +1,7 @@
 <?php
 include "user_session.php";
 include "APIurls.php";
+include "flash_messages.php";
 
 $session_cookie= get_cookied_session();
 
